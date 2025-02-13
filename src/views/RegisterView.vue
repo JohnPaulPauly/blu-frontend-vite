@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     register(){
-      if (this.input.email !== "" || this.input.password !== "") {
+      if (this.input.fullName !== "" && this.input.email !== "" && this.input.password !== "") {
         // this.output = "Authentication complete"
         // stores true to the set_authentication and username to the set_username
         // this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
@@ -23,21 +23,22 @@ export default {
         console.log(this.input);
         axios.post("http://localhost:8080/auth/signup", this.input)
             .then(res => {
-              this.output = "Registration complete."
-              this.output = res.data.message;
-              this.$router.push()
+              this.output = res.data.message || "Registration successful!";
+              this.$router.push('/login')
             })
             .catch(error => {
               if (error.response && error.response.status === 409) {
-                this.output = error.response.data;
+                this.output = error.response.data || "This email already exists!";
               } else {
                 this.output = "An error occurred. Please try again.";
               }
             })
       } else {
         // this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
-        this.output = "Username and password can not be empty"
+        this.output = "Full name, Username, and Password can not be empty"
       }
+
+      return this.output;
     },
   },
 }
@@ -62,6 +63,7 @@ export default {
       Login
     </button>
   </form>
+  <h3> Output: {{this.output}}</h3>
 </template>
 
 <style scoped>
