@@ -15,18 +15,25 @@ export default {
   },
   methods: {
     register(){
-      if (this.input.username !== "" || this.input.password !== "") {
-          // this.output = "Authentication complete"
-          // stores true to the set_authentication and username to the set_username
-          // this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
-          // this.$store.commit(`auth/${SET_USERNAME}`, this.input.username
+      if (this.input.email !== "" || this.input.password !== "") {
+        // this.output = "Authentication complete"
+        // stores true to the set_authentication and username to the set_username
+        // this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
+        // this.$store.commit(`auth/${SET_USERNAME}`, this.input.username
         console.log(this.input);
         axios.post("http://localhost:8080/auth/signup", this.input)
             .then(res => {
+              this.output = "Registration complete."
               this.output = res.data.message;
+              this.$router.push()
             })
-
-        // this.output = "Registration complete."
+            .catch(error => {
+              if (error.response && error.response.status === 409) {
+                this.output = error.response.data;
+              } else {
+                this.output = "An error occurred. Please try again.";
+              }
+            })
       } else {
         // this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
         this.output = "Username and password can not be empty"
@@ -55,7 +62,6 @@ export default {
       Login
     </button>
   </form>
-  <h3> Output: {{this.output}}</h3>
 </template>
 
 <style scoped>
