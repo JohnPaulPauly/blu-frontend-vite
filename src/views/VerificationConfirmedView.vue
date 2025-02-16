@@ -3,29 +3,25 @@
 export default {
   name: "VerificationConfirmedView",
   methods: {
-
+    goToLogin() {
+      this.$router.push({ name: 'login' });
+    },
   },
-}
+  }
 </script>
 
 <template>
-  <img class="blu-logo" src="../assets/BLUPotentialLogo.png" alt="BLU logo" />
   <div class="header"></div>
   <p class="confirmed-verification">Thank you for verifying your account!<br>Your account has been created and verified successfully.<br>Welcome to BLU!</p>
   <p class="plaintext">Click the button below to be redirected to our login page and to access your new BLU account!</p>
   <div class="button-center">
-    <button class="loginbutton btn">Return to Login </button></div>
+    <button @click='goToLogin()' class="loginbutton btn">Return to Login </button></div>
 
 
 </template>
 
 <style scoped>
 
-.blu-logo{
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
-}
 .header {
   display: flex;
   align-items: flex-end;
@@ -47,7 +43,7 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 45px;
-  margin-top: 50px;
+  margin-top: 45px;
   background-color: #3659F5
 }
 .btn {

@@ -12,7 +12,6 @@
       Login
     </button>
   </form>
-  <h3> Output: {{this.output}}</h3>
 </template>
 
 <script>
@@ -37,7 +36,7 @@ export default {
         this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
         this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
         this.output = "Authentication complete."
-        this.$router.push('/home')
+        this.$router.push('/dashboard')
       } else {
         this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
         this.output = "Username and password can not be empty"
