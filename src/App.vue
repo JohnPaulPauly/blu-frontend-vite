@@ -1,5 +1,4 @@
-<template>
-  <img alt="Vue logo" src="./assets/BLUPotentialLogo.png" style="width: 200px; height: 200px;">
+<template class>
   <main>
     <RouterView />
   </main>

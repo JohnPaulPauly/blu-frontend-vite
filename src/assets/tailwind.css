@@ -1,3 +1,50 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    /* add fonts to out theme */
+    --font-primary: "Roboto", serif;
+    --font-secondary: "Roboto Flex", serif;
+    --font-third: "Roboto Mono", serif;
+    --font-fourth: "Poppins", serif;
+
+    /* add colors from our color board */
+    --color-blu50: #ecf6ff;
+    --color-blu100: #ddedff;
+    --color-blu200: #c1deff;
+    --color-blu300: #9cc6ff;
+    --color-blu400: #75a3ff;
+    --color-blu500: #5581ff;
+    --color-blu600: #3659f5;
+    --color-blu700: #2541ce;
+    --color-blu800: #243daf;
+    --color-blu900: #263b89;
+    --color-blu950: #162050;
+}
+
+/*header styling */
+
+.navbar-header{
+    @apply sm:px-0
+    px-5
+    py-5
+    md:py-0
+    md:px-7
+    lg:px-[120px]
+    bg-blu50
+    md:bg-blu50
+    relative
+    z-10;
+}
+
+.nav-box {
+    @apply flex flex-wrap
+    items-center
+    justify-between
+    w-full
+    md:py-0
+    text-lg
+    text-gray-700
+    bg-transparent
+    md:h-[80px];
+}
