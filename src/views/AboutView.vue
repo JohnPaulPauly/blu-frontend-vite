@@ -1,3 +1,12 @@
+<!--WIP-->
+<template>
+  <NavBar/>
+  <h3>About Page</h3>
+  <label>
+    Search: <input v-model.trim="search" maxlength="20">
+  </label>
+</template>
+
 // About Page
 <script setup>
 import { computed } from 'vue'
@@ -16,11 +25,3 @@ const search = computed({
   }
 })
 </script>
-
-<template>
-  <NavBar/>
-  <h3>About Page</h3>
-  <label>
-    Search: <input v-model.trim="search" maxlength="20">
-  </label>
-</template>

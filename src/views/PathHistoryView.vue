@@ -1,3 +1,11 @@
+<!--Page to view path history as table information. WIP-->
+<template>
+  <h1>Path History</h1>
+  <div>
+    <button @click="goToDashboard()">Go To Dashboard</button>
+  </div>
+</template>
+
 <script>
 
 export default {
@@ -10,10 +18,3 @@ export default {
   },
 }
 </script>
-
-<template>
-  <h1>Path History</h1>
-  <div>
-    <button @click="goToDashboard()">Go To Dashboard</button>
-  </div>
-</template>

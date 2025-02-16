@@ -1,3 +1,4 @@
+<!--Displays map-->
 <template>
   <h1>AccessMapView</h1>
   <ScatterChart/>

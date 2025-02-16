@@ -1,3 +1,5 @@
+
+<!--This is the main page. it loads other views via RouterView-->
 <template>
   <img alt="Vue logo" src="./assets/BLUPotentialLogo.png" style="width: 200px; height: 200px;">
   <main>
@@ -15,7 +17,6 @@ export default {
 
 
   },
-  //LoginView,
 }
 
 </script>

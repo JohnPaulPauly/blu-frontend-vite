@@ -1,3 +1,6 @@
+<!-- Navigation Bar. WIP
+  Used in:
+    AboutView-->
 <template>
   <header class="navbar-header">
     <nav class="nav-box">

@@ -1,4 +1,4 @@
-
+<!--displays website for user profile-->
 <template>
   <img alt="Vue logo" src="./assets/BLUPotentialLogo.png" style="width: 200px; height: 200px;">
   <main>
@@ -19,10 +19,12 @@ export default {
     };
   },
   created() {
+    //fetches user data when the view is created in the site.
     this.fetchUserProfile();
   },
   methods: {
     async fetchUserProfile() {
+      //fetch the profile info of the current user
       try {
         // FETCH USER URL
         const response = await axios.post("http://localhost:8080/auth/profile")
@@ -32,7 +34,9 @@ export default {
       }
     },
     async updateProfile() {
+      //updates user information
       try {
+
         // FETCH USER URL
         await axios.post("http://localhost:8080/auth/profile");
         alert("Profile updated successfully!");
@@ -41,6 +45,8 @@ export default {
       }
     },
     async deleteProfile(){
+      //deletes user in database
+
       if (confirm("Are you sure you want to delete your profile?")){
         try {
           // FETCH USER URL

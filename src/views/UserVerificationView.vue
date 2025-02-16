@@ -1,3 +1,11 @@
+<!--Email verification page. WIP-->
+<template>
+  <h1>User Verification Page</h1>
+  <div>
+    <button @click="goToLogin()">Return to Login</button>
+  </div>
+</template>
+
 <script>
 
 export default {
@@ -10,10 +18,3 @@ export default {
   },
 }
 </script>
-
-<template>
-  <h1>User Verification Page</h1>
-  <div>
-    <button @click="goToLogin()">Return to Login</button>
-  </div>
-</template>

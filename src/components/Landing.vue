@@ -1,3 +1,7 @@
+<!--Landing component. 3 buttons, each one links to a different page. WIP
+  Used in:
+    DashboardView
+-->
 <template>
   <div class="dashboard-buttons">
     <button class="btn">Join Map Queue</button>
