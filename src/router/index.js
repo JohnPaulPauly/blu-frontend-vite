@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
-import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView} from "@/views";
+import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, AdminView} from "@/views";
 import NavBar from "@/components/NavBar.vue";
 
 const routes = [
