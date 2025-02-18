@@ -22,6 +22,17 @@
     --color-blu950: #162050;
 }
 
+/*different font weights*/
+.roboto-bold{
+    font-family: var(--font-primary);
+    font-weight: 900;
+}
+
+.roboto-semibold{
+    font-family: var(--font-primary);
+    font-weight: 600;
+}
+
 /*header styling */
 
 .navbar-header{
@@ -37,6 +48,7 @@
     z-10;
 }
 
+/*navbox styling*/
 .nav-box {
     @apply flex flex-wrap
     items-center
@@ -48,3 +60,4 @@
     bg-transparent
     md:h-[80px];
 }
+
