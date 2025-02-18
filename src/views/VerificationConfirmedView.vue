@@ -1,20 +1,32 @@
 <script>
+import axios from "axios";
+import {useRoute} from "vue-router";
 
 export default {
   name: "VerificationConfirmedView",
   methods: {
-
+    login() {
+      this.$router.push({ path: "/login" });
+    },
+    verify() {
+      console.log("http:/localhost:8080/auth/confirm/" + this.$route.params.token );
+      axios.get("http://localhost:8080/auth/confirm/" + this.$route.params.token );
+    }
   },
+  created() {
+    useRoute().params.token = this.$route.query.token;
+    this.verify();
+    console.log("Verification Confirmed View");
+  }
 }
 </script>
 
 <template>
-  <img class="blu-logo" src="../assets/BLUPotentialLogo.png" alt="BLU logo" />
   <div class="header"></div>
   <p class="confirmed-verification">Thank you for verifying your account!<br>Your account has been created and verified successfully.<br>Welcome to BLU!</p>
   <p class="plaintext">Click the button below to be redirected to our login page and to access your new BLU account!</p>
   <div class="button-center">
-    <button class="loginbutton btn">Return to Login </button></div>
+    <button class="loginbutton btn" v-on:click.prevent = "login()" >Return to Login </button></div>
 
 
 </template>

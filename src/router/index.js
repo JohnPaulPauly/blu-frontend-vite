@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
-import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, VerificationConfirmedView} from "@/views";
+import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, UserVerificationView, VerificationConfirmedView} from "@/views";
 
 const routes = [
     { path: '/', name: "dashboard", component: DashboardView },
@@ -9,7 +9,7 @@ const routes = [
     { path: '/login', name: "login", component: LoginView },
     { path: '/accessmap', name: "accessmap", component: AccessMapView},
     // {path: '/navbar', name: "navbar", component: NavBar},
-    // { path: '/userverification', name: "userverification", component: UserVerificationView },
+    { path: '/userverification', name: "userverification", component: UserVerificationView },
     { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView }
 ]
 
