@@ -9,7 +9,6 @@ export default {
 </script>
 
 <template>
-  <img class="blu-logo" src="../assets/BLUPotentialLogo.png" alt="BLU logo" />
   <div class="header"></div>
   <img class="mail" src="../assets/mail.png" alt="Email Logo">
   <p class="heading-verification">Thank you for registering!<br>Verify Your Email:</p>
@@ -20,11 +19,6 @@ export default {
 
 <style>
 
-.blu-logo{
-  width: 200px;
-  height: 200px;
-  margin: 0 auto;
-}
 .header {
   display: flex;
   align-items: flex-end;

@@ -7,3 +7,7 @@ export  { default as UserVerificationView } from './UserVerificationView.vue';
 export  { default as RegisterView } from './RegisterView.vue';
 export  { default as AccessMapView } from './AccessMapView.vue';
 export  { default as VerificationConfirmedView } from './VerificationConfirmedView.vue';
+export { default as LandingView} from './LandingView.vue';
+export { default as MapQueueView} from './MapQueueView.vue';
+export { default as PathHistoryView} from './PathHistoryView.vue';
+export { default as PairDeviceView } from './PairDeviceView.vue'
