@@ -1,42 +1,37 @@
-<!--displays website for user profile-->
-<template>
-  <img alt="Vue logo" src="@/assets/BLUPotentialLogo.png" style="width: 200px; height: 200px;">
-  <main>
-    <h1>Hello</h1>
-    <RouterView />
-  </main>
-</template>
-
 <script>
 import axios from 'axios';
 export default {
   data() {
     return {
       user: {
-        name: "",
-        email: "",
+        "fullName": "cool guy",
+        "email": "coolguy@gmail.com",
+        "password": "$2a$10$/8X5IWxM2RDoXuhg3crLiuQPOBahjRf2gEq4XU9NR3CApQ1O/4kUW",
+        "emailVerified": false,
+        "authorities": [],
+        "username": "coolguy@gmail.com",
+        "credentialsNonExpired": true,
+        "accountNonExpired": true,
+        "accountNonLocked": false,
+        "enabled": true
       },
     };
   },
   created() {
-    //fetches user data when the view is created in the site.
     this.fetchUserProfile();
   },
   methods: {
     async fetchUserProfile() {
-      //fetch the profile info of the current user
       try {
         // FETCH USER URL
-        const response = await axios.post("http://localhost:8080/auth/profile")
+        const response = await axios.get("http://localhost:8080/auth/fetch")
         this.user = response.data;
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
     },
     async updateProfile() {
-      //updates user information
       try {
-
         // FETCH USER URL
         await axios.post("http://localhost:8080/auth/profile");
         alert("Profile updated successfully!");
@@ -45,8 +40,6 @@ export default {
       }
     },
     async deleteProfile(){
-      //deletes user in database
-
       if (confirm("Are you sure you want to delete your profile?")){
         try {
           // FETCH USER URL
@@ -60,3 +53,29 @@ export default {
   }
 };
 </script>
+
+<template>
+  <div v-if="user" class="profile-container">
+    <h2>User Profile</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.fullName }}</p>
+  </div>
+</template>
+
+<style scoped>
+.profile-container {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+button {
+  margin-top: 10px;
+  cursor: pointer;
+}
+</style>
