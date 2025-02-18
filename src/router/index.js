@@ -1,6 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
-import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, AdminView} from "@/views";
+import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, AdminView, UserProfileView} from "@/views";
 import NavBar from "@/components/NavBar.vue";
 
 const routes = [
@@ -10,7 +10,8 @@ const routes = [
     { path: '/login', name: "login", component: LoginView },
     { path: '/accessmap', name: "accessmap", component: AccessMapView},
     {path: '/navbar', name: "navbar", component: NavBar},
-    {path: '/adminview', name: "adminview", component: AdminView}
+    {path: '/adminview', name: "adminview", component: AdminView},
+    {path: '/profile', name: "profile", component: UserProfileView}
 ]
 
 const router = createRouter({
