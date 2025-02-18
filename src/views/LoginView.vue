@@ -36,7 +36,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 
       <!-- Create an Account Link -->
       <div class="text-left">
-        <a href="#" class="text-#1e1e1e text-sm underline leading-snug font-primary">Create an Account</a>
+        <a href="#/register" class="text-#1e1e1e text-sm underline leading-snug font-primary">Create an Account</a>
       </div>
     </form>
 

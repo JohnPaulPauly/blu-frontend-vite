@@ -1,8 +1,14 @@
 <script>
 import axios from 'axios';
+import bluLogo from "@/assets/images/BluCombinedLogo.svg";
 
 export default {
   name: 'RegisterView',
+  computed: {
+    bluLogo() {
+      return bluLogo
+    }
+  },
   data() {
     return {
       input: {
@@ -46,23 +52,39 @@ export default {
 
 <template>
   <h1>Register a new Account!</h1>
-  <form name="register-form" >
-    <div class="mb-3">
-      <label for="fullName">Full Name: </label>
-      <input id="fullName" type="text" v-model="input.fullName"/>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-white px-4">
+    <!-- Logo -->
+    <img class="w-40 h-40 md:w-64 md:h-64 mb-6" :src='bluLogo' alt=" Blu Logo ">
+  <form name="register-form" class="w-full max-w-md p-6 bg-white rounded-lg border border-gray-300 shadow-md flex flex-col space-y-6 mb-12">
+    <!-- Full Name Input -->
+    <div class="flex flex-col space-y-2 text-left">
+      <label for="fullName" class="text-gray-800 text-base font-primary">Full Name</label>
+      <input id="fullName" type="text" v-model="input.fullName"
+             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your full name"/>
     </div>
-    <div class="mb-3">
-      <label for="email">Email: </label>
-      <input id="email" type="text" v-model="input.email"/>
+
+    <!-- Email Input -->
+    <div class="flex flex-col space-y-2 text-left">
+      <label for="username" class="text-gray-800 text-base font-primary">Email</label>
+      <input id="username" type="text" v-model="input.username"
+             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your email"/>
     </div>
-    <div class="mb-3">
-      <label for="password">Password: </label>
-      <input id="password" type="password" v-model="input.password"/>
+
+    <!-- Password Input -->
+    <div class="flex flex-col space-y-2 text-left">
+      <label for="password" class="text-gray-800 text-base font-primary">Password</label>
+      <input id="password" type="password" v-model="input.password"
+             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your password"/>
     </div>
-    <button class="btn btn-outline-dark" type="submit" v-on:click.prevent = "register()">
-      Login
+
+    <!-- Sign In Button -->
+    <button type="submit" v-on:click.prevent="register()"
+            class="w-full py-3 bg-blu800 border-[#2c2c2c] text-white text-base rounded-lg hover:bg-blue-700 transition font-primary">
+      Register
     </button>
+
   </form>
+  </div>
 </template>
 
 <style scoped>

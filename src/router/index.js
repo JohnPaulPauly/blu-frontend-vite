@@ -1,13 +1,23 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
-import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, AdminView, UserProfileView} from "@/views";
+import {
+    DashboardView,
+    AboutView,
+    RegisterView,
+    LoginView,
+    AccessMapView,
+    AdminView,
+    UserProfileView,
+    UserVerificationView, VerificationConfirmedView
+} from "@/views";
 import NavBar from "@/components/NavBar.vue";
 
 const routes = [
-    { path: '/', name: "dashboard", component: DashboardView },
+    { path: '/dashboard', name: "dashboard", component: DashboardView },
     { path: '/register', name: "register", component: RegisterView },
     { path: '/about', name: "about", component: AboutView },
     { path: '/login', name: "login", component: LoginView },
+    { path: '/', name: "landing", component: LoginView },
     { path: '/accessmap', name: "accessmap", component: AccessMapView},
     { path: '/navbar', name: "navbar", component: NavBar},
     { path: '/adminview', name: "adminview", component: AdminView},
