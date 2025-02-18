@@ -35,7 +35,7 @@ export default {
             })
       } else {
         // this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
-        this.output = "Full name, Email, and Password can not be empty"
+        this.output = "Full name, Username, and Password can not be empty"
       }
 
       return this.output;
@@ -63,7 +63,6 @@ export default {
       Login
     </button>
   </form>
-  <h3> Output: {{this.output}}</h3>
 </template>
 
 <style scoped>
