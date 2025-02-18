@@ -48,7 +48,7 @@
     z-10;
 }
 
-/*navbox styling*/
+/* nav box styling*/
 .nav-box {
     @apply flex flex-wrap
     items-center

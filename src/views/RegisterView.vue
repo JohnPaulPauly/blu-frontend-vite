@@ -51,10 +51,12 @@ export default {
 </script>
 
 <template>
-  <h1>Register a new Account!</h1>
   <div class="flex flex-col items-center justify-center min-h-screen bg-white px-4">
     <!-- Logo -->
-    <img class="w-40 h-40 md:w-64 md:h-64 mb-6" :src='bluLogo' alt=" Blu Logo ">
+    <!-- img class="w-40 h-40 md:w-64 md:h-64 mb-6" :src='bluLogo' alt=" Blu Logo "-->
+    <div class="content-center mb-14" >
+      <p class="text-5xl roboto-bold tracking-tight text-balance text-blu800 sm:text-5xl"> Create Your BLU Profile</p>
+    </div>     
   <form name="register-form" class="w-full max-w-md p-6 bg-white rounded-lg border border-gray-300 shadow-md flex flex-col space-y-6 mb-12">
     <!-- Full Name Input -->
     <div class="flex flex-col space-y-2 text-left">
@@ -80,7 +82,7 @@ export default {
     <!-- Sign In Button -->
     <button type="submit" v-on:click.prevent="register()"
             class="w-full py-3 bg-blu800 border-[#2c2c2c] text-white text-base rounded-lg hover:bg-blue-700 transition font-primary">
-      Register
+      Create Account 
     </button>
 
   </form>

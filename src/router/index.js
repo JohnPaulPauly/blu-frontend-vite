@@ -11,13 +11,14 @@ import {
     UserVerificationView, VerificationConfirmedView
 } from "@/views";
 import NavBar from "@/components/NavBar.vue";
+import practice from "@/components/practice.vue";
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
     { path: '/register', name: "register", component: RegisterView },
     { path: '/about', name: "about", component: AboutView },
     { path: '/login', name: "login", component: LoginView },
-    { path: '/', name: "landing", component: LoginView },
+    { path: '/', name: "landing", component: practice },
     { path: '/accessmap', name: "accessmap", component: AccessMapView},
     { path: '/navbar', name: "navbar", component: NavBar},
     { path: '/adminview', name: "adminview", component: AdminView},
