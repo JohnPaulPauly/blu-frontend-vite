@@ -19,14 +19,14 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
         <div class="flex lg:hidden">
           <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">
             <span class="sr-only">Open main menu</span>
-            <Bars3Icon class="size-6" aria-hidden="true" />
+            <Bars3Icon class="size-8" aria-hidden="true" />
           </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-sm/6 font-semibold text-gray-900">{{ item.name }}</a>
+          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-lg/6 roboto-bold text-gray-900 px-3 py-2 rounded-md transition duration-300 hover:bg-gray-100">{{ item.name }}</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+          <a href="#" class="text-sm/6 font-semibold text-gray-900" v-on:click.prevent="LoginRoute">Log in <span aria-hidden="true">&rarr;</span></a>
         </div>
       </nav>
       <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
@@ -45,7 +45,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
           <div class="mt-6 flow-root">
             <div class="-my-6 divide-y divide-gray-500/10">
               <div class="space-y-2 py-6">
-                <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-primary text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
+                <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 roboto-semibold text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
               </div>
               <div class="py-6">
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 roboto-bold text-gray-900 hover:bg-gray-50">Log in</a>
@@ -86,14 +86,18 @@ import { ref } from 'vue';
 
 
 const navigation = [
-  { name: 'Product', href: '#' },
+  { name: 'About', href: '#' },
   { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'Contact', href: '#' },
 ]
 
 export default{
-  name: "practice"
+  name: "practice",
+  methods:{
+    LoginRoute(){
+      this.$router.push('/login')
+    }
+  }
 }
 
 const mobileMenuOpen = ref(false)
