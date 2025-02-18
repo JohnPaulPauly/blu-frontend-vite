@@ -46,7 +46,8 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 </template>
 
 <script>
-import { SET_AUTHENTICATION, SET_USERNAME } from "@/store/storeconstants";
+import {SET_AUTHENTICATION, SET_TOKEN, SET_USERNAME} from "@/store/storeconstants";
+import axios from "axios";
 
 export default {
   name: 'LoginView',
@@ -64,6 +65,13 @@ export default {
       if (this.input.username !== "" || this.input.password !== "") {
         this.output = "Authentication complete"
         //stores true to the set_authentication and username to the set_username
+        axios.post("http://localhost:8080/auth/login", this.input)
+            .then((response) => {
+              this.$store.commit(`auth/${SET_TOKEN}`, response.data.token );
+              axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            })
+            .catch((error) => this.output = "Username or Password is incorrect" + error);
+
         this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
         this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
         this.output = "Authentication complete."

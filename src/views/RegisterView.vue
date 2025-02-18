@@ -68,7 +68,7 @@ export default {
     <!-- Email Input -->
     <div class="flex flex-col space-y-2 text-left">
       <label for="username" class="text-gray-800 text-base font-primary">Email</label>
-      <input id="username" type="text" v-model="input.username"
+      <input id="username" type="text" v-model="input.email"
              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your email"/>
     </div>
 
