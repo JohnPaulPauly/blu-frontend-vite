@@ -79,7 +79,7 @@ export default {
              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your password"/>
     </div>
 
-    <!-- Sign In Button -->
+    <!-- Sign Up Button -->
     <button type="submit" v-on:click.prevent="register()"
             class="w-full py-3 bg-blu800 border-[#2c2c2c] text-white text-base rounded-lg hover:bg-blue-700 transition font-primary">
       Create Account 

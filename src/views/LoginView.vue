@@ -12,7 +12,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
       <!-- Email Input -->
       <div class="flex flex-col space-y-2 text-left">
         <label for="username" class="text-gray-800 text-base font-primary">Email</label>
-        <input id="username" type="text" v-model="input.username"
+        <input id="username" type="text" v-model="input.email"
                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none text-sm" placeholder="Enter your email"/>
       </div>
 
@@ -38,6 +38,8 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
       <div class="text-left">
         <a href="#/register" class="text-#1e1e1e text-sm underline leading-snug font-primary">Create an Account</a>
       </div>
+
+      <p class="text-red-500" v-if="output">{{ output }}</p>
     </form>
 
 
@@ -54,7 +56,7 @@ export default {
   data() {
     return {
       input: {
-        username: "",
+        email: "",
         password: ""
       },
       output: "",
@@ -69,13 +71,12 @@ export default {
             .then((response) => {
               this.$store.commit(`auth/${SET_TOKEN}`, response.data.token );
               axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+              this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
+              this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
+              this.output = "Authentication complete."
+              this.$router.push('/dashboard')
             })
-            .catch((error) => this.output = "Username or Password is incorrect" + error);
-
-        this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
-        this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
-        this.output = "Authentication complete."
-        this.$router.push('/dashboard')
+            .catch((error) => this.output = "Username or Password is incorrect");
       } else {
         this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
         this.output = "Username and password can not be empty"
