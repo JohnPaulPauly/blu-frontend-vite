@@ -41,10 +41,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 
       <p class="text-red-500" v-if="output">{{ output }}</p>
     </form>
-
-
   </div>
-
 </template>
 
 <script>

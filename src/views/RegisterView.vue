@@ -30,7 +30,7 @@ export default {
         axios.post("http://localhost:8080/auth/signup", this.input)
             .then(res => {
               this.output = res.data.message || "Registration successful!";
-              this.$router.push('/login')
+              this.$router.push('/userverification')
             })
             .catch(error => {
               if (error.response && error.response.status === 409) {
@@ -84,6 +84,8 @@ export default {
             class="w-full py-3 bg-blu800 border-[#2c2c2c] text-white text-base rounded-lg hover:bg-blue-700 transition font-primary">
       Create Account 
     </button>
+
+    <p class="text-red-500" v-if="this.output">{{this.output}}</p>
 
   </form>
   </div>

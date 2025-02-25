@@ -13,8 +13,6 @@ export default {
   <img class="mail" src="../assets/mail.png" alt="Email Logo">
   <p class="heading-verification">Thank you for registering!<br>Verify Your Email:</p>
   <p class="plaintext">Please check your email inbox for a verification email to confirm your identity. Once you have <br>verified, follow the instructions on the page displayed in the link contained the email we sent.</p>
-
-
 </template>
 
 <style>
