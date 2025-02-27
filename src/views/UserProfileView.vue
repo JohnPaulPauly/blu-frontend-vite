@@ -24,7 +24,7 @@ export default {
     async fetchUserProfile() {
       try {
         // FETCH USER URL
-        const response = await axios.get("http://localhost:8080/auth/fetch")
+        const response = await axios.get("http://localhost:8080/users/me")
         this.user = response.data;
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -33,7 +33,7 @@ export default {
     async updateProfile() {
       try {
         // FETCH USER URL
-        await axios.post("http://localhost:8080/auth/profile");
+        await axios.post(`http://localhost:8080/users/${this.user.id}`);
         alert("Profile updated successfully!");
       } catch(error) {
         console.error("Error updating profile:", error);

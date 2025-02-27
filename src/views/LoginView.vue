@@ -67,7 +67,8 @@ export default {
         axios.post("http://localhost:8080/auth/login", this.input)
             .then((response) => {
               this.$store.commit(`auth/${SET_TOKEN}`, response.data.token );
-              axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+              localStorage.setItem("token", response.data.token);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
               this.$store.commit(`auth/${SET_AUTHENTICATION}`, true);
               this.$store.commit(`auth/${SET_USERNAME}`, this.input.username);
               this.output = "Authentication complete."
