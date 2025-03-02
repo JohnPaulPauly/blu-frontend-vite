@@ -1,8 +1,10 @@
+//This is where the Pair Device page will be, it successfully redirects to the dashboard page
 <script>
 
 export default {
   name: "PairDeviceView",
   methods: {
+    /* This function allows users to return to dashboard */
     goToDashboard() {
       this.$router.push({ name: 'dashboard' });
     },
