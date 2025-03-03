@@ -2,12 +2,22 @@
   Used in:
     AccessMapView-->
 <template>
-  <div>
+  <div class="chart-div">
   <Scatter :data="data"
            :options="chartConfig.options"
+           ref="scatter"
   />
+    <input>
   </div>
+
 </template>
+
+<style scoped>
+.chart-div {
+  width: 500px;
+  height: 500px;
+}
+</style>
 
 <script lang="ts" setup>
 
@@ -32,16 +42,26 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale
 const data = ref<ChartData<'line'>>({
   datasets: []
 })
+let newColor = "#00ff00"
+let dataHolder;
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
+  data.value = chartConfig.randomData()
   setInterval(() => {
-    //set data to random value
-    data.value = chartConfig.randomData()
 
+
+    data.value = chartConfig.randomData(data.value.datasets)
+    //data.value = chartConfig.addData(data.value)
+    //data.value = chartConfig.moveData(data.value.datasets[0].data[0].x, data.value.datasets[0].data[0].y)
+
+    // data.value.datasets[0].backgroundColor = newColor
+    // if (newColor === "#00ff00")
+    //   newColor = "#ff0000"
+    // else
+    //   newColor = "#00ff00"
   }, 1000 )//1 second
 })
-
 
 
 
