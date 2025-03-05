@@ -48,7 +48,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
                 <a v-for="item in navigation" :key="item.name" :href="item.href" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 roboto-semibold text-gray-900 hover:bg-gray-50">{{ item.name }}</a>
               </div>
               <div class="py-6">
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 roboto-bold text-gray-900 hover:bg-gray-50">Log in</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 roboto-bold text-gray-900 hover:bg-gray-50" v-on:click.prevent="LoginRoute">Log in</a>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
           <h1 class="text-5xl roboto-bold tracking-tight text-balance text-gray-900 sm:text-7xl">Tracking that works <span class ="text-blu800 roboto-bold ">anywhere.</span></h1>
           <p class="mt-8 text-lg font-primary text-pretty text-gray-500 sm:text-xl/8">GPS tracking has blind spots. Ours doesn’t. <span class = "roboto-bold text-gray-600">Real-time, reliable, and available indoors, underground, or anywhere Bluetooth goes.</span> </p>
           <div class="mt-10 flex items-center justify-center gap-x-6">
-            <a href="#" class="rounded-full bg-blu700 px-6.5 py-3.5 text-auto roboto-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
+            <a v-on:click.prevent="RegisterRoute" class="rounded-full bg-blu700 px-6.5 py-3.5 text-auto roboto-semibold text-white shadow-xs hover:bg-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
           </div>
         </div>
       </div>
@@ -96,6 +96,9 @@ export default{
   methods:{
     LoginRoute(){
       this.$router.push('/login')
+    },
+    RegisterRoute(){
+      this.$router.push('/register')
     }
   }
 }

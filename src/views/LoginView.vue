@@ -4,7 +4,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen bg-white px-4">
     <!-- Logo -->
-    <img class="w-40 h-40 md:w-64 md:h-64 mb-6" :src='bluLogo' alt=" Blu Logo ">
+    <img class="w-40 h-40 md:w-64 md:h-64 mb-6" v-on:click.prevent="LandingRoute" :src='bluLogo' alt=" Blu Logo ">
 
     <!-- Login Form Container -->
     <form name="login-form" class="w-full max-w-md p-6 bg-white rounded-lg border border-gray-300 shadow-md flex flex-col space-y-6 mb-12">
@@ -47,6 +47,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 
 <script>
 import { SET_AUTHENTICATION, SET_USERNAME } from "@/store/storeconstants";
+import { ref } from 'vue';
 
 export default {
   name: 'LoginView',
@@ -72,6 +73,9 @@ export default {
         this.$store.commit(`auth/${SET_AUTHENTICATION}`, false);
         this.output = "Username and password can not be empty"
       }
+    },
+    LandingRoute(){
+      this.$router.push('/')
     }
   },
 }
