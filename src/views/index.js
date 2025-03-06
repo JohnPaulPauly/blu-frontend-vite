@@ -12,3 +12,4 @@ export  { default as LandingView} from './LandingView.vue';
 export  { default as MapQueueView} from './MapQueueView.vue';
 export  { default as PathHistoryView} from './PathHistoryView.vue';
 export  { default as PairDeviceView } from './PairDeviceView.vue';
+export  {default as RegisterDeviceView} from './RegisterDeviceView.vue'
