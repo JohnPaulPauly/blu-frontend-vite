@@ -1,4 +1,4 @@
-// Dashboard Page code written by Samantha Preciado
+/* Dashboard Page code written by Samantha Preciado
 <script>
 export default {
   name: "DashboardView",
@@ -6,6 +6,9 @@ export default {
     /* This function is used by buttons to redirect to login page */
     goToLogin() {
       this.$router.push({ name: 'login' });
+    },
+    goToDashboard() {
+      this.$router.push({ name: 'dashboard'});
     },
     goToUserProfile() {
       this.$router.push({name: 'profile'})
@@ -21,6 +24,9 @@ export default {
     /* This function can be used by buttons to redirect to pair device page */
     goToPairDevice() {
       this.$router.push({ name: 'pairdevice' });
+    },
+    goToAdminView() {
+      this.$router.push({ name: 'admin'})
     }
   },
 }
@@ -30,15 +36,17 @@ export default {
 <template>
   <div class="divider">
     <button @click="goToLogin()" class="header-btn-logout"><img class="icon-logout" src="../assets/logout.png"></button>
-    <button class="header-btn-home"><img class="icon-home" src="../assets/homebutton.png"></button>
+    <button @click="goToDashboard()" class="header-btn-home"><img class="icon-home" src="../assets/homebutton.png"></button>
     <button @click="goToUserProfile()" class="header-btn-profile"><img class="icon-profile" src="../assets/profilebutton.png"></button>
   </div>
   <div class="dashboard-buttons">
     <button @click='goToMapQueue()' :class="['btn', 'btn-map']">Join Map Queue</button>
     <button @click='goToPathHistory()' :class="['btn', 'btn-paths']">Access Previous Paths</button>
     <button @click='goToPairDevice()'  :class="['btn', 'btn-pairing']">Pair New Device</button>
+</div>
+  <div class="button-center">
+    <button @click='goToAdminView()' class="adminbutton btn">Admin View</button>
   </div>
-
 
 
 </template>
@@ -50,8 +58,13 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 45px;
-  margin-top: 50px
+  margin-top: 50px;
 }
+.button-center{
+  display: flex;
+  justify-content: center
+}
+
 .header-btn-logout {
   display: flex;
   align-items: flex-start;
@@ -104,10 +117,19 @@ export default {
   background-color: #2528CE;
   margin: 0 auto;
 }
+.adminbutton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 45px;
+  margin-top: -27%;
+  background-color: #939dbb;
+  margin-left: -100%;
+}
 /*Styles contents of dashboard buttons*/
 .btn {
   color: white;
-  padding: 15px 30px;
+  padding: 25px 30px;
   border: none;
   border-radius: 10px;
   font-size: 40px;
@@ -115,6 +137,7 @@ export default {
   cursor: pointer;
   width: 473px;
   height: 114px;
+  margin-right: -50%;
 }
 
 /* Styles coloring for each respective button on dashboard */

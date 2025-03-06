@@ -1,9 +1,12 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
-import {DashboardView, AboutView, RegisterView, LoginView, AccessMapView, UserVerificationView, VerificationConfirmedView, PathHistoryView} from "@/views";
+import {DashboardView, AboutView, LoginView, AccessMapView, UserVerificationView, VerificationConfirmedView, PathHistoryView, AdminView} from "@/views";
 import MapQueueView from "@/views/MapQueueView.vue";
 import PairDeviceView from "@/views/PairDeviceView.vue";
 import LandingView from "@/views/LandingView.vue";
+import DashboardAdminView from "@/views/DashboardAdminView.vue";
+import UserProfileView from "@/views/UserProfileView.vue"
+import RegisterView from "@/views/RegisterView.vue"
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
@@ -17,7 +20,10 @@ const routes = [
     { path: '/mapqueue', name: "mapqueue", component: MapQueueView},
     { path: '/pathhistory', name: "pathhistory", component: PathHistoryView},
     { path: '/pairdevice', name: "pairdevice", component : PairDeviceView},
-    { path: '/', name: "landing", component: LandingView}
+    { path: '/', name: "landing", component: LandingView},
+    { path: '/admin', name: "admin", component: AdminView},
+    { path: '/admindashboard', name: "admindashboard", component: DashboardAdminView},
+    { path: '/profile', name: "profile", component: UserProfileView}
 ]
 
 const router = createRouter({
