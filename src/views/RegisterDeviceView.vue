@@ -1,9 +1,11 @@
 <script>
+// File Created by Luke Trinh
 import axios from 'axios';
 import bluLogo from "@/assets/images/BluCombinedLogo.svg";
 export default{
   data() {
     return {
+      // Hard coded testing files
       devices: [
         {
           "deviceName": "Device1",
@@ -18,12 +20,15 @@ export default{
       ],
     };
   },
+  // Load all the devices and the active device
   async mounted() {
     this.loadActiveDevice();
     await this.listDevices();
   },
   methods: {
+    // Lists all devices
     async listDevices() {
+      // Fetches all devices from backend
       try {
         const response = await axios.get("http://localhost:8080/device/");
         this.devices = response.data;
@@ -31,22 +36,27 @@ export default{
         console.error("No Devices Registered")
       }
     },
+    // Sets active device
     setActiveDevice(device) {
+      // Unselects from previous active device
       if (this.activeDevice && this.activeDevice.ipAddress === device.ipAddress) {
         this.activeDevice = null;
         localStorage.removeItem("activeDevice");
       } else {
+        // Sets from active device with console response
         this.activeDevice = device;
         localStorage.setItem("activeDevice", JSON.stringify(device));
         console.log(device.deviceName, " is now the active device. with IP: ", device.ipAddress);
       }
     },
+    // Stores active device to save
     loadActiveDevice() {
       const storedDevice = localStorage.getItem("activeDevice");
       if (storedDevice) {
         this.activeDevice = JSON.parse(storedDevice);
       }
     },
+    // Add device, this is hardcoded for now, but we will be adding features to actually connect to a device later
     addDevice() {
       const newDevice = {
         deviceName: `Device${this.devices.length + 1}`,
