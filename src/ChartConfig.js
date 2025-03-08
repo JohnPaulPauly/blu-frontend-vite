@@ -2,46 +2,36 @@ function getRandomInt() {
     //returns random integer from -10 to 10, inclusive.
     return Math.floor(Math.random() * (21)) - 10
 }
-
-//scatter chart data with one point (-10 <= x,y <= 10)
-export const randomData = (dataset) => ({
+export const randomData = () => ({
     datasets: [
         {
-            backgroundColor: '#ff0000',
-            data: dataset.append(
+            data: [
                 {
                     x: getRandomInt(),
                     y: getRandomInt()
-                })
-
+                }
+                ]
 
         }
     ]
 })
 
-export const moveData = (x,y) => ({
 
+//scatter chart data with one point (-10 <= x,y <= 10)
+export const randomAddData = (dataset) => ({
     datasets: [
         {
-            backgroundColor: '#ff0000',
-            data: [
+            data: dataset[0].data.concat([
                 {
-                    x: (x + Math.floor(Math.random() * (3) ) -1),
-                    y: (y + Math.floor(Math.random() * (3) ) -1)
-                }
-            ]
+                    x: getRandomInt(),
+                    y: getRandomInt()
+                }])
+
+
         }
     ]
 })
 
-export const addData = function (val_in) {
-    const datasets = val_in.datasets
-    datasets[0].data.push({
-        x: (datasets[0].data[datasets[0].data.length - 1].x + (Math.random() * (3) ) -1),
-        y: (datasets[0].data[datasets[0].data.length - 1].y + (Math.random() * (3) ) -1)
-    })
-    return {datasets: datasets}
-}
 
 //options for scatter chart, sets border size
 export const options = {
@@ -53,12 +43,12 @@ export const options = {
     scales: {
         x: {
             position: "top",
-            min: -10,
+            min: -10,//these values will be set for whatever the device's size is
             max: 10
         },
         y: {
             position: "right",
-            min: -10,
+            min: -10,//these values will be set for whatever the device's size is
             max: 10
         },
     }
