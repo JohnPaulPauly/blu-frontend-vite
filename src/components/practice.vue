@@ -23,7 +23,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
           </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-          <a v-for="item in navigation" :key="item.name" :href="item.href" class="text-lg/6 roboto-bold text-gray-900 px-3 py-2 rounded-md transition duration-300 hover:bg-gray-100">{{ item.name }}</a>
+          <a v-for="item in navigation" :key="item.name" @click="navigateTo(item)"  class="text-lg/6 roboto-bold text-gray-900 px-3 py-2 rounded-md transition duration-300 hover:bg-gray-100">{{ item.name }}</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" class="text-sm/6 font-semibold text-gray-900" v-on:click.prevent="LoginRoute">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -86,7 +86,7 @@ import { ref } from 'vue';
 
 
 const navigation = [
-  { name: 'About', href: '#' },
+  { name: 'About', route: '/about'},
   { name: 'Features', href: '#' },
   { name: 'Contact', href: '#' },
 ]
@@ -99,6 +99,11 @@ export default{
     },
     RegisterRoute(){
       this.$router.push('/register')
+    },
+    navigateTo(item) {
+      if (item.route) {
+        this.$router.push(item.route);
+      }
     }
   }
 }
