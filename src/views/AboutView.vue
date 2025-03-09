@@ -21,6 +21,7 @@ const search = computed({
   }
 })
 
+//The four features displayed on the page held in a list
 const features = [
   {
     name: 'Real-Time Tracking',
@@ -60,6 +61,7 @@ const mobileMenuOpen = ref(false)
 
 <!--we will import the navbar for every page and add anything that is unique to the about page-->
 <template>
+  <!-- NavBar from landing page included in the about page for same styling-->
   <div class="bg-white">
     <header class="absolute inset-x-0 top-0 z-50">
       <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -154,8 +156,6 @@ const mobileMenuOpen = ref(false)
       </div>
 
       <!-- fOOTER-->
-
-
       <footer class="bg-white dark:bg-gray-900">
         <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:pt-12">
           <div class="md:flex md:justify-between ">
@@ -165,6 +165,7 @@ const mobileMenuOpen = ref(false)
 
             </div>
           </div>
+          <!-- Line divider and then icons and trademark on footer-->
           <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
           <div class="flex items-center sm:justify-between justify-between flex-row flex-nowrap mt-4 sm:mx-10">
           <span class="sm:text-sm lg:text-base text-sm text-gray-500 sm:text-center dark:text-gray-400 leading-none">© 2025 <a href="#" class="hover:underline">BLU™</a>. All Rights Reserved.

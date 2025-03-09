@@ -1,6 +1,6 @@
 <script setup>
 import bluLogo from '@/assets/images/BluHorizontalLogo.svg';
-import {Bars3Icon} from "@heroicons/vue/24/outline/index.js";
+import {Bars3Icon, UserCircleIcon} from "@heroicons/vue/24/outline/index.js";
 
 const props = defineProps({
   isSidebarOpen: Boolean
@@ -42,7 +42,7 @@ const emit = defineEmits(["toggle-sidebar"]);
             <div class ="ml-10">
               <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="user photo">
               </button>
             </div>
 
