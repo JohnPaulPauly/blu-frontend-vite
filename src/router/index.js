@@ -8,7 +8,7 @@ import {
     AccessMapView,
     AdminView,
     UserProfileView,
-    UserVerificationView, VerificationConfirmedView
+    UserVerificationView, VerificationConfirmedView, PathHistoryView
 } from "@/views";
 import NavBar from "@/components/NavBar.vue";
 import practice from "@/components/practice.vue";
@@ -26,7 +26,8 @@ const routes = [
     { path: '/profile', name: "profile", component: UserProfileView},
     { path: '/userverification', name: "userverification", component: UserVerificationView },
     { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView },
-    { path: '/registerdevice', name: "registerdevice", component: registerDeviceView}
+    { path: '/registerdevice', name: "registerdevice", component: registerDeviceView},
+    { path: '/history', name: "PathhistoryView", component: PathHistoryView }
 ]
 
 const router = createRouter({
