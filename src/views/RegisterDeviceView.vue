@@ -6,6 +6,7 @@ export default{
   data() {
     return {
       // Hard coded testing files
+      activeDevice: null,
       devices: [
         {
           "deviceName": "Device1",
@@ -46,7 +47,7 @@ export default{
         // Sets from active device with console response
         this.activeDevice = device;
         localStorage.setItem("activeDevice", JSON.stringify(device));
-        console.log(device.deviceName, " is now the active device. with IP: ", device.ipAddress);
+        console.log(`${device.deviceName}, " is now the active device. with IP: ", ${device.ipAddress}`);
       }
     },
     // Stores active device to save
@@ -100,8 +101,10 @@ export default{
             <td class="border px-6 py-2">{{ device.macAddress }}</td>
             <td class="border px-6 py-2">
               <input
-                  type="checkbox"
-                  :checked="device === activeDevice"
+                  type="radio"
+                  name="activeDevice"
+                  :value="device.ipAddress"
+                  v-model="activeDevice"
                   @change="setActiveDevice(device)"
               />
             </td>
