@@ -46,6 +46,7 @@
 
 <script lang="ts" setup>
 
+import axios from 'axios';
 import { ref, onMounted } from 'vue'
 import {
   Chart as ChartJS,
@@ -60,6 +61,7 @@ import {
 } from 'chart.js'
 import { Scatter } from 'vue-chartjs'
 import * as chartConfig from '@/ChartConfig'
+import {Client} from "@stomp/stompjs";
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -70,47 +72,74 @@ const data = ref<ChartData<'line'>>({
 
 let newColor = "#2980b9" //new color to toggle to
 let pathOn = false // toggles when pressing New Path button
-let csv = []
+let pathName;
 
 
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
-  data.value = chartConfig.randomData()
-  setInterval(() => {
 
-    if (pathOn)
-    {
-      data.value = chartConfig.randomAddData(data.value.datasets)
-      csv.push({
-        timestamp: Date.now(),
-        x: data.value.datasets[0].data[data.value.datasets[0].data.length - 1].x,
-        y: data.value.datasets[0].data[data.value.datasets[0].data.length - 1].y
-      })
-    }
-    else
-      data.value = chartConfig.randomData()
+  const client = new Client({
 
-    //colors are updated
-    data.value.datasets[0].backgroundColor = newColor
-    data.value.datasets[0].borderColor = newColor
-  }, 1000 )//1 second
+    brokerURL: 'http://localhost:8080/ws/livepath',
+
+    onConnect: () => {
+      console.log("It's in. Oh my god it's in!")
+      //Subscribe to /topic/{email} of the user to get data stream of their active device
+      client.subscribe(`/topic/ntsimerekis@yahoo.com`, message => {
+        //This function runs everytime a message is received in the channel
+
+
+        //Unlike axios, StompJS does not automatically translate Javascript Objects :(
+        var position = JSON.parse(message.body)
+        console.log(`Received X: ${position.x}`)
+        console.log(`Received Y: ${position.y}`)
+
+
+        if (pathOn)
+        {
+          data.value = chartConfig.addData(data.value.datasets, position)
+        }
+        else
+          data.value = chartConfig.newData(position)
+
+        //colors are updated
+        data.value.datasets[0].backgroundColor = newColor
+        data.value.datasets[0].borderColor = newColor
+      });
+    },
+  });
+  client.activate();
 })
 
 
 function newPathButton() {
   //starts a new path
 
+
+  //end path
   if (pathOn) {
 
-    //WIP, need to check filename against the user's already created files,
-    // then send the data to the backend where it will create the csv
+    axios.post(`http://localhost:8080/paths/${pathName}/stop`)
+        .then(() => {
+          pathOn = false
+          console.log(`Path ${pathName} ended.`)
+        })
+        .catch(error => console.error(error))
 
-    pathOn = false;
   }
+  //new path
   else {
-    pathOn = true;
-    let filename = prompt(' Please input Path name:', 'mypath')
+    while (!pathOn) {
+      pathName = prompt(' Please input Path name:', 'mypath')
+
+      //WIP, need to check filename against the user's already created files,
+      // then send the name to the backend where it will store the file
+      axios.post(`http://localhost:8080/paths/${pathName}`)
+          .then(() => console.log("New path started."))
+          .catch(error => console.log(error))
+      pathOn = true
+    }
   }
 
 }
@@ -127,6 +156,7 @@ function newColorButton() {
 
     return color
   }
+
   newColor = getRandomColor()
 }
 

@@ -2,13 +2,13 @@ function getRandomInt() {
     //returns random integer from -10 to 10, inclusive.
     return Math.floor(Math.random() * (21)) - 10
 }
-export const randomData = () => ({
+export const newData = (position) => ({
     datasets: [
         {
             data: [
                 {
-                    x: getRandomInt(),
-                    y: getRandomInt()
+                    x: position.x,
+                    y: position.y
                 }
                 ]
 
@@ -18,13 +18,13 @@ export const randomData = () => ({
 
 
 //scatter chart data with one point (-10 <= x,y <= 10)
-export const randomAddData = (dataset) => ({
+export const addData = (dataset, position) => ({
     datasets: [
         {
             data: dataset[0].data.concat([
                 {
-                    x: getRandomInt(),
-                    y: getRandomInt()
+                    x: position.x,
+                    y: position.y
                 }])
 
 
@@ -53,3 +53,5 @@ export const options = {
         },
     }
 }
+
+
