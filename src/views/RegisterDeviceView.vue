@@ -5,8 +5,8 @@ import bluLogo from "@/assets/images/BluCombinedLogo.svg";
 export default{
   data() {
     return {
-      // Hard coded testing files
       activeDevice: null,
+      // Hard coded testing files
       devices: [
         {
           "deviceName": "Device1",
@@ -20,6 +20,13 @@ export default{
         },
       ],
     };
+  },
+  computed: {
+    activeDeviceIp: {
+      get() {
+        return this.activeDevice ? this.activeDevice.ipAddress : null;
+      },
+    },
   },
   // Load all the devices and the active device
   async mounted() {
@@ -104,7 +111,7 @@ export default{
                   type="radio"
                   name="activeDevice"
                   :value="device.ipAddress"
-                  v-model="activeDevice"
+                  :checked="activeDeviceIp === device.ipAddress"
                   @change="setActiveDevice(device)"
               />
             </td>
