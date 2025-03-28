@@ -1,4 +1,4 @@
-// Dashboard Page code written by Samantha Preciado
+// Dashboard Page
 <script setup>
 import bluLogo from '@/assets/images/BLUHorizontalLogo.svg';
 import bluLogoAlone from '@/assets/images/BluLogoAlone.svg';
@@ -77,9 +77,10 @@ export default {
   <!-- TOP NAVBAR: navBar styling defined in NavBar.vue -->
   <navBar :isSidebarOpen ="isSidebarOpen" @toggle-sidebar = "toggleSidebar"/> <!--Component called and event logged-->
 
+
   <div class="flex min-h-screen text-gray-900">
     <!-- Sidebar for Dashboard-->
-    <aside  id = "logo-sidebar" :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen, 'sm:translate-x-0': true}" class="w-64 sm:pr-4 sm:pt-20 pr-4 xl:pr-8 2xl:pr-12 bg-gray-50  space-y-4 fixed  pt-20 top-0 h-screen transition-transform" aria-label="Sidebar">
+    <aside  id = "logo-sidebar" :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen, 'sm:translate-x-0': true}" class="z-40 w-64 sm:pr-4 sm:pt-20  xl:pr-8 2xl:pr-12 bg-gray-50  space-y-4 fixed  pt-20 top-0 h-screen transition-transform" aria-label="Sidebar">
       <div class="h-full pt-10 px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 roboto-bold">
           <li>
@@ -101,20 +102,17 @@ export default {
       </div>
     </aside>
 
+    <!-- Background Overlay (for mobile) -->
+    <div
+        v-if="isSidebarOpen"
+        class="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm sm:hidden"
+        @click="toggleSidebar"
+    ></div>
+
     <!-- Main Content -->
-    <div class="flex-1  ml-64 p-6 ">
+    <div class="flex-1 p-6 flex flex-col items-center justify-center min-h-screen text-center sm:ml-64">
       <!-- Header -->
-      <div class="flex fixed pt-8 justify-between items-center mb-6">
-        <div class ="flex items-center gap-4">
           <h1 class="text-2xl roboto-bold">Welcome to BLU Dashboard</h1>
-          <div class="flex items-center gap-3 relative">
-            <input
-                type="text"
-                placeholder="Search..."
-                class="px-4 py-2 rounded bg-gray-300 text-white outline-none"
-            />
-            <Search class="text-white" />
-          </div>
           <div class="relative">
             <button @click="toggleDropdown">
               <Settings class="text-white" />
@@ -135,9 +133,6 @@ export default {
           </div>
         </div>
       </div>
-    </div>
-
-  </div>
 </template>
 
 <style scoped>
