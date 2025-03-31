@@ -1,8 +1,7 @@
 <!--Displays map. WIP-->
 <template>
-  <button @click="color()">color</button>
+  <button @click="color()"></button>
   <div class="content-center">
-    <h1>AccessMapView</h1>
     <ScatterChart/>
   </div>
 
