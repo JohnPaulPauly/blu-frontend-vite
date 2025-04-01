@@ -4,13 +4,30 @@
 <template>
   <div class="w-full h-[calc(100vh-4rem)] flex flex-col items-center justify-start relative">
 
+
+
     <!-- Chart Area-->
-    <div class="w-full max-w-[900px] h-[350px] px-6 sm:px-8 mx-auto">
+    <div class="relative w-full max-w-[900px] h-[350px] px-6 sm:px-8 mx-auto">
+
+      <!-- Overlay -->
+      <div
+          v-if="showOverlay"
+          class="absolute rounded-md inset-0 z-40 bg-gray-500/10 backdrop-blur-sm shadow-md border border-white/20 flex items-center justify-center"
+      >
+        <button
+            @click="showOverlay = false"
+            class="px-6 py-3 rounded-lg text-white bg-blu800 hover:bg-blu700 roboto-semibold text-lg shadow-lg border border-white/20 transition inline-flex items-center gap-2"
+        >
+          <PlayCircleIcon class="w-5 h-5"/>
+          Begin Tracking
+        </button>
+      </div>
+
       <Scatter :data="data" :options="chartConfig.options" />
     </div>
 
     <!--Control Buttons-->
-    <div class = "mt-4 flex gap-4">
+    <div class = "mt-4 flex gap-4"   v-if="!showOverlay">
 
       <!--NewPath/ EndPath Button -->
       <button class="button-c bg-blu800 hover:bg-blu600 inline-flex items-center gap-2 roboto-semibold" @click="newPathButton()">
@@ -92,6 +109,7 @@ import { Scatter } from 'vue-chartjs'
 import * as chartConfig from '@/ChartConfig'
 import {Client} from "@stomp/stompjs";
 import {PlayIcon, PauseIcon, PaintBrushIcon, MapPinIcon} from "@heroicons/vue/24/outline";
+import {PlayCircleIcon} from "@heroicons/vue/24/solid";
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -112,6 +130,12 @@ const isPaused = ref(false)
 function togglePause(){
   isPaused.value = !isPaused.value;
 }
+
+//reactive state variable for overlay and Begin button.
+// To be displayed before user chooses to begin tracking (Dashboard view)
+const showOverlay = ref(true)
+
+
 
 
 
