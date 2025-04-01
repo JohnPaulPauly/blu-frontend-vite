@@ -7,6 +7,7 @@ import LandingView from "@/views/LandingView.vue";
 import DashboardAdminView from "@/views/DashboardAdminView.vue";
 import UserProfileView from "@/views/UserProfileView.vue"
 import RegisterView from "@/views/RegisterView.vue"
+import popup from "@/components/Popup.vue";
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
@@ -23,7 +24,10 @@ const routes = [
     { path: '/', name: "landing", component: LandingView},
     { path: '/admin', name: "admin", component: AdminView},
     { path: '/admindashboard', name: "admindashboard", component: DashboardAdminView},
-    { path: '/profile', name: "profile", component: UserProfileView}
+    { path: '/profile', name: "profile", component: UserProfileView},
+    { path: '/popup', name: "popup", component: popup}
+
+
 ]
 
 const router = createRouter({
