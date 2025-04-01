@@ -17,9 +17,10 @@ const search = computed({
 })
 </script>
 
+<!--we will import the navbar for every page and add anything that is unique to the about page-->
 <template>
   <NavBar/>
-  <h3>About Page</h3>
+  <h3 class = 'mt-4'>Under Construction!!! </h3>
   <label>
     Search: <input v-model.trim="search" maxlength="20">
   </label>

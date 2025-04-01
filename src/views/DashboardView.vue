@@ -28,6 +28,7 @@ export default {
 
 /* Contains 3 main buttons to navigate in-app features */
 <template>
+  <!-- contains the navigation bar that appears at the top of the dashboard --->
   <div class="divider">
     <button @click="goToLogin()" class="header-btn-logout"><img class="icon-logout" src="../assets/logout.png"></button>
     <button class="header-btn-home"><img class="icon-home" src="../assets/homebutton.png"></button>
@@ -52,6 +53,9 @@ export default {
   gap: 45px;
   margin-top: 50px
 }
+
+/* Styling for buttons that appear on navigation bar */
+/* Logout Button Styling */
 .header-btn-logout {
   display: flex;
   align-items: flex-start;
@@ -60,17 +64,20 @@ export default {
   background-color: transparent;
   border: transparent;
 }
+/* Home Button Styling */
 .header-btn-home {
   display: flex;
   align-items: center;
   position: absolute;
   left: 47.5%;
+  top: 31%;
   justify-content: center;
   width: 75px;
   height: 70px;
   background-color: transparent;
   border: transparent;
 }
+/* Profile Button Styling */
 .header-btn-profile {
   display: flex;
   align-items: flex-end;
@@ -81,21 +88,27 @@ export default {
   background-color: transparent;
   border: transparent;
 }
+/* Logout Icon Styling */
 .icon-logout {
   align-items: flex-start;
   width: 78px;
   height: 65px;
+  margin-left: -5%;
+  margin-top: 4%;
 }
+/* Home Icon Styling */
 .icon-home {
   align-items: center;
   width: 78px;
   height: 65px;
 }
+/* Profile Icon Styling */
 .icon-profile {
   align-items: flex-end;
   width: 78px;
   height: 65px;
 }
+/* Divider Styling for Navigation Bar */
 .divider {
   display: flex;
   align-items: flex-end;

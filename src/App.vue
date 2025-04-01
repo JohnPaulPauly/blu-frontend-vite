@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 <template>
   <img alt="Vue logo" src="./assets/BLUPotentialLogo.png" style="top: 0; width: 200px; height: 200px;">
   <main>
@@ -15,6 +18,7 @@ export default {
 
   },
   //LoginView,
+
 }
 
 </script>

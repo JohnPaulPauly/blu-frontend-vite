@@ -1,14 +1,14 @@
 <template>
   <form name="login-form" >
-    <div class="mb-3">
+    <div>
       <label for="username">Username: </label>
       <input id="username" type="text" v-model="input.username"/>
     </div>
-    <div class="mb-3">
+    <div>
       <label for="password">Password: </label>
       <input id="password" type="password" v-model="input.password"/>
     </div>
-    <button class="btn btn-outline-dark" type="submit" v-on:click.prevent = "login()">
+    <button type="submit" v-on:click.prevent = "login()">
       Login
     </button>
   </form>
@@ -45,3 +45,7 @@ export default {
   },
 }
 </script>
+
+<style>
+
+</style>
