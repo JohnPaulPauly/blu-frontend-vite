@@ -7,9 +7,16 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 
 import { ref, onMounted, onUnmounted } from "vue";
+import ScatterChart from "@/components/ScatterChart.vue";
 
 //Define sidebar state , ref makes it relative
 const isSidebarOpen = ref(false);
+
+const showDropdown = ref(false);
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
 
 //Top NavBar opens from hamburger menu on small screens and closes when clicked outside of hamburger
 const toggleSidebar =  () => {
@@ -78,10 +85,10 @@ export default {
   <navBar :isSidebarOpen ="isSidebarOpen" @toggle-sidebar = "toggleSidebar"/> <!--Component called and event logged-->
 
 
-  <div class="flex min-h-screen text-gray-900">
+  <div class="flex min-h-screen pt-16 text-gray-900 ">
     <!-- Sidebar for Dashboard-->
-    <aside  id = "logo-sidebar" :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen, 'sm:translate-x-0': true}" class="z-40 w-64 sm:pr-4 sm:pt-20  xl:pr-8 2xl:pr-12 bg-gray-50  space-y-4 fixed  pt-20 top-0 h-screen transition-transform" aria-label="Sidebar">
-      <div class="h-full pt-10 px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+    <aside  id = "logo-sidebar" :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen, 'sm:translate-x-0': true}" class="z-40 w-64 bg-gray-50  space-y-4 fixed  top-0 h-screen transition-transform" aria-label="Sidebar">
+      <div class="h-full pt-20  pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 roboto-bold">
           <li>
             <a href="#" class="flex items-center  p-2 text-gray-800 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -110,9 +117,9 @@ export default {
     ></div>
 
     <!-- Main Content -->
-    <div class="flex-1 p-6 flex flex-col items-center justify-center min-h-screen text-center sm:ml-64">
+    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
       <!-- Header -->
-          <h1 class="text-2xl roboto-bold">Welcome to BLU Dashboard</h1>
+         <ScatterChart/>
           <div class="relative">
             <button @click="toggleDropdown">
               <Settings class="text-white" />

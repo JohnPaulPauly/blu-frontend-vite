@@ -1,12 +1,37 @@
 <script setup>
 import bluLogo from '@/assets/images/BluHorizontalLogo.svg';
-import {Bars3Icon, UserCircleIcon} from "@heroicons/vue/24/outline/index.js";
+import {Bars3Icon, UserCircleIcon, Cog6ToothIcon, ArrowRightStartOnRectangleIcon} from "@heroicons/vue/24/outline/index.js";
+import { ref, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   isSidebarOpen: Boolean
 });
 
 const emit = defineEmits(["toggle-sidebar"]);
+
+//dropdown trigger
+const showDropdown = ref(false);
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+}
+
+const closeDropdown = (e) => {
+  if (
+      !e.target.closest('#dropdown-user') &&
+      !e.target.closest('#profile-button')
+  ) {
+    showDropdown.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', closeDropdown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeDropdown)
+})
 </script>
 
 <template>
@@ -25,55 +50,54 @@ const emit = defineEmits(["toggle-sidebar"]);
             <img class="sm:h-12 h-8 w-auto " :src="bluLogo" alt="Blu Logo" />
           </a>
         </div>
+
+
         <div class="flex items-center">
           <div class="flex items-center justify-between w-full">
-            <form class=" flex-1 max-w-md ">
-              <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-              <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-                </div>
-                <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-              </div>
-            </form>
+
+          <!-- Profile Photo & Dropdown -->
             <div class ="ml-10">
-              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+              <button id="profile-button" type = "button" class="flex items-center text-sm  bg-gray-800 rounded-full space-x-2 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" @click = "toggleDropdown">
                 <span class="sr-only">Open user menu</span>
                 <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D" alt="user photo">
               </button>
             </div>
 
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
-              <div class="px-4 py-3" role="none">
-                <p class="text-sm text-gray-900 dark:text-white" role="none">
-                  Neil Sims
-                </p>
-                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  neil.sims@flowbite.com
-                </p>
+            <!-- Drop Down-->
+            <div
+                v-if="showDropdown"
+                id="dropdown-user"
+                class="absolute top-[90%] left-auto right-2 w-48 bg-white dark:bg-gray-700 rounded shadow-lg z-50 text-sm"
+            >
+              <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-600">
+                <p class="text-gray-800 dark:text-white font-semibold">Raquel Hernandez</p>
+                <p class="text-gray-500 dark:text-gray-300 truncate">raquel@blu.com</p>
               </div>
-              <ul class="py-1" role="none">
+              <ul class="py-2">
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                  <a href="/profile" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white">
+                    <UserCircleIcon class="h-5 w-5" /> Profile
+                  </a>
                 </li>
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                  <a href="/settings" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-white">
+                    <Cog6ToothIcon class="h-5 w-5" /> Settings
+                  </a>
                 </li>
                 <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
+                  <button
+                      @click="$emit('sign-out')"
+                      class="flex w-full items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-red-400"
+                  >
+                    <ArrowRightStartOnRectangleIcon class="h-5 w-5" /> Sign Out
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
+          </div>
         </div>
       </div>
-    </div>
   </nav>
 
 

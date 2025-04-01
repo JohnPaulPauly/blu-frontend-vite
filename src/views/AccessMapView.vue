@@ -1,13 +1,24 @@
-<!--Displays map-->
+<!--Displays map. WIP-->
 <template>
-  <h1>AccessMapView</h1>
-  <ScatterChart/>
+  <button @click="color()"></button>
+  <div class="content-center">
+    <ScatterChart/>
+  </div>
+
 </template>
+
+
+
 
 <script>
 import ScatterChart from '@/components/ScatterChart.vue'
 export default {
   name: "AccessMapView",
-  components: {ScatterChart}
+  components: {ScatterChart},
+  methods: {
+    color(){
+      console.log("hello")
+    }
+  }
 }
 </script>
