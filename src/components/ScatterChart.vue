@@ -39,7 +39,6 @@
       <!-- In future pause button will only work when a path is being tracked. We have boolean operators to
        decide what color and what icon is showing based on the state of the button-->
       <button @click="togglePause()"
-              :disabled = "!pathOn"
               :class="['button-c inline-flex items-center gap-2 text-white transition ', isPaused
       ? 'bg-emerald-500 hover:bg-emerald-600'
       : 'bg-amber-300 hover:bg-yellow-500']" >
