@@ -8,10 +8,15 @@ import {
     AccessMapView,
     AdminView,
     UserProfileView,
-    UserVerificationView, VerificationConfirmedView
+    PathHistoryView,
+    MapQueueView,
+    PairDeviceView,
+    UserVerificationView, VerificationConfirmedView, DashboardAdminView
 } from "@/views";
 import NavBar from "@/components/NavBar.vue";
 import practice from "@/components/practice.vue";
+import ForgotPasswordView from "@/views/ForgotPasswordView.vue";
+import CreateNewPasswordView from "@/views/CreateNewPasswordView.vue";
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
@@ -24,7 +29,13 @@ const routes = [
     { path: '/adminview', name: "adminview", component: AdminView},
     { path: '/profile', name: "profile", component: UserProfileView},
     { path: '/userverification', name: "userverification", component: UserVerificationView },
-    { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView }
+    { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView },
+    { path: '/mapqueue', name: "mapqueue", component: MapQueueView},
+    { path: '/pathhistory', name: "pathhistory", component: PathHistoryView},
+    { path: '/pairdevice', name: "pairdevice", component: PairDeviceView},
+    { path: '/admindashboard', name: "admindashboard", component: DashboardAdminView},
+    { path: '/forgotpassword', name: "forgotpassword", component: ForgotPasswordView},
+    { path: '/resetpassword', name: "resetpassword", component: CreateNewPasswordView}
 ]
 
 const router = createRouter({
