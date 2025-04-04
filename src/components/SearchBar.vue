@@ -8,7 +8,7 @@
       class="w-full max-w-sm mx-auto flex items-center border border-gray-300 rounded-md bg-white shadow-sm overflow-hidden mb-4"
       @submit.prevent
   >
-    <!-- 🔤 Search input -->
+    <!-- Search input box styling-->
     <input
         v-model="query"
         @input="debouncedSearch"
@@ -18,7 +18,7 @@
         :placeholder="placeholder"
     />
 
-    <!-- 🔍 Submit Button with Icon -->
+    <!-- Submit Button as an Icon -->
     <button
         type="submit"
         class="bg-blue-600 hover:bg-blue-700 text-white p-2 h-full flex items-center justify-center rounded-none"
@@ -39,9 +39,6 @@
 
 </template>
 
-<style scoped>
-
-</style>
 
 <script>
 
