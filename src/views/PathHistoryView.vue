@@ -2,7 +2,9 @@
 // File Created by Luke Trinh
 import axios from 'axios';
 import bluLogo from "@/assets/images/BluCombinedLogo.svg";
+import SearchBar from "@/components/SearchBar.vue";
 export default{
+  components: {SearchBar},
   // Default paths and sorting order
   data() {
     return {
@@ -84,6 +86,9 @@ export default{
       >
         Add Trial
       </button>
+      <SearchBar
+          placeholder="Search users by name or email"
+      />
 
       <div class="overflow-y-auto max-h-[500px] border border-gray-300">
         <table class="min-w-full text-center">
