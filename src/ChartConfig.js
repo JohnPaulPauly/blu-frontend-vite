@@ -32,6 +32,10 @@ export const addData = (dataset, position) => ({
     ]
 })
 
+export const clearData = () => ({
+    datasets: []
+})
+
 
 //options for scatter chart, sets border size
 export const options = {
