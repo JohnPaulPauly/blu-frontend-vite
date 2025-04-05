@@ -43,9 +43,11 @@ export default {
           "enabled": true
         }
       ],
+      filteredUsers: [] //search results live here
     };
   },
   async mounted() {
+    this.filteredUsers = [...this.users];
     await this.fetchUsers();
   },
   methods: {
@@ -56,6 +58,9 @@ export default {
       } catch(error) {
         console.error("Error fetching users:", error);
       }
+
+      this.users = response.data;
+      this.filteredUsers = [...this.users]; // ← Shallow sync users to the new filtered array
     },
     async deleteUser(userEmail) {
       if (!confirm("Are you sure you want to delete this user?")) return;
@@ -79,7 +84,12 @@ export default {
     <h2 class="text-xl font-bold mb-4">User List</h2>
 
     <!--Search Bar-->
-    <SearchBar/>
+    <SearchBar
+        :data="users"
+        :searchKeys="['fullName', 'email']"
+        placeholder="Search by name or email"
+        @update:results="filteredUsers = $event"
+    />
 
     <table class="min-w-full border border-gray-300">
       <thead>
@@ -90,7 +100,7 @@ export default {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="user in users" :key="user.email" class="hover:bg-gray-50">
+      <tr v-for="user in filteredUsers" :key="user.email" class="hover:bg-gray-50">
         <td class="border px-4 py-2">{{ user.fullName }}</td>
         <td class="border px-4 py-2">{{ user.email }}</td>
         <td class="border px-4 py-2">{{ user.emailVerified }}</td>

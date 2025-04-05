@@ -9,6 +9,7 @@ export default{
   data() {
     return {
       paths: [],
+      filteredPaths: [], //will hold search results
       sortBy: null,
       sortOrder: 1
     };
@@ -27,6 +28,7 @@ export default{
       }catch(error) {
         console.error("No Paths under user")
       }
+      this.filteredPaths = [...this.paths];
     },
     // Simple delete function
     deletePath(index){
@@ -45,6 +47,7 @@ export default{
         this.paths = [];
       }
       this.paths.push(newPath);
+      this.filteredPaths = [...this.paths]; //sync the filtered list twith add trial for testing
     },
     // Sort path on columns
     sortPaths(column) {
@@ -55,7 +58,7 @@ export default{
         this.sortOrder = 1; // Default to ascending when switching columns
       }
       // Sort based on specific criteria
-      this.paths.sort((a, b) => {
+      this.filteredPaths.sort((a, b) => {
         if (column === "pathName") {
           return a.pathName.localeCompare(b.pathName) * this.sortOrder;
         } else if (column === "time") {
@@ -87,7 +90,10 @@ export default{
         Add Trial
       </button>
       <SearchBar
-          placeholder="Search users by name or email"
+          :data="paths"
+          :searchKeys="['pathName', 'ipAddress', 'time']"
+          placeholder="Search by name, IP address, or time"
+          @update:results="filteredPaths = $event"
       />
 
       <div class="overflow-y-auto max-h-[500px] border border-gray-300">
@@ -108,7 +114,7 @@ export default{
           </thead>
           <tbody>
           <tr
-              v-for="(path, index) in paths"
+              v-for="(path, index) in filteredPaths"
               :key="index"
               class="hover:bg-gray-50"
           >

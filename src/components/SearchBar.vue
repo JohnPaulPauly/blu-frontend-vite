@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue'
-import {debounce} from 'lodash.debounce'
+import Fuse from 'fuse.js'
 
 
 //Props -- these are variables we can change in any parent page that we call SearchBar in to.
@@ -16,13 +16,50 @@ const props = defineProps({
 
 //Emits are how we send filtered results to parent pages. The logic lives here but the reaction to the logic
 // is completed by the parent page
-const emits = defineEmits(['update:results'])
+const emit = defineEmits(['update:results'])
 
 // Set the reactive state for the query and results
 const query = ref('')
 const results = ref([])
 
-//Set up a safe way to get deep values from objects. Uses dot path strings
+let fuse = null
+
+//refresh fuse instance when data comes in , emits updated results to parent page
+watch(() => [...props.data], // force reactivity by spreading the array
+    (newData) => {
+      console.log(" Updated props.data:", newData)
+
+      if (newData.length) {
+        fuse = new Fuse(newData, {
+          keys: props.searchKeys,
+          threshold: 0.4,
+          includeScore: false
+        })
+
+        results.value = newData
+        emit('update:results', results.value)
+      }
+    },
+    { immediate: true })
+//search logic powered by Fuse
+const handleSearch = () => {
+  const q = (query.value || '').trim() // get the trimmed version of the query, if no query then empty string
+  console.log("🔎 Searching for:", q);
+
+
+  if(!q){
+    results.value = props.data //if no query just return all data
+  } else {
+    const fuseResults = fuse.search(q)
+    results.value = fuseResults.map(r => r.item) // retrieve results and save to value
+
+    console.log("Fuse Results:", results.value);
+
+    emit('update:results', results.value) //send to parent
+  }
+
+
+}
 
 
 </script>
@@ -36,7 +73,7 @@ const results = ref([])
     <!-- Search input box styling-->
     <input
         v-model="query"
-        @input="debouncedSearch"
+        @input="handleSearch"
         type="search"
         id="default-search"
         class="flex-1 px-3 py-2 text-sm text-gray-900 focus:outline-none dark:bg-gray-700 dark:text-white"
