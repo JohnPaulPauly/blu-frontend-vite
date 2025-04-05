@@ -1,4 +1,29 @@
 <script setup>
+import {ref, watch} from 'vue'
+import {debounce} from 'lodash.debounce'
+
+
+//Props -- these are variables we can change in any parent page that we call SearchBar in to.
+//Each one has name and type
+const props = defineProps({
+  data: Array,
+  searchKeys: Array,
+  placeholder: {
+    type: String,
+    default: 'Search...'
+  }
+})
+
+//Emits are how we send filtered results to parent pages. The logic lives here but the reaction to the logic
+// is completed by the parent page
+const emits = defineEmits(['update:results'])
+
+// Set the reactive state for the query and results
+const query = ref('')
+const results = ref([])
+
+//Set up a safe way to get deep values from objects. Uses dot path strings
+
 
 </script>
 
