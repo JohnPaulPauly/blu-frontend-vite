@@ -44,7 +44,7 @@ watch(() => [...props.data], // force reactivity by spreading the array
 //search logic powered by Fuse
 const handleSearch = () => {
   const q = (query.value || '').trim() // get the trimmed version of the query, if no query then empty string
-  console.log("🔎 Searching for:", q);
+  console.log(" Searching for:", q);
 
 
   if(!q){
