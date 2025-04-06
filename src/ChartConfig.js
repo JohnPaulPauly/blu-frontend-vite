@@ -38,7 +38,7 @@ export const clearData = () => ({
 
 
 //options for scatter chart, sets border size
-export const options = {
+export const options  = (size=20) => ({
     legend: false,
     responsive: true,
     maintainAspectRatio: true,
@@ -47,15 +47,15 @@ export const options = {
     scales: {
         x: {
             position: "top",
-            min: -10,//these values will be set for whatever the device's size is
-            max: 10
+            min: -(size / 2),//these values will be set for whatever the device's size is
+            max: (size / 2)
         },
         y: {
             position: "right",
-            min: -10,//these values will be set for whatever the device's size is
-            max: 10
+            min: -(size / 2),//these values will be set for whatever the device's size is
+            max: (size / 2)
         },
     }
-}
+})
 
 

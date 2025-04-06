@@ -5,8 +5,9 @@
   <div class="container">
     <button class="button-c" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
     <button class="button-c" @click="newColorButton()">Random Color</button>
+    <button class="button-c" @click="PausePathButton()">{{pathPaused ? 'Unpause' : 'Pause'}}</button>
     <div class="chart-div">
-      <Scatter :data="data" :options="chartConfig.options" />
+      <Scatter :data="data" :options="chartConfig.options()" />
     </div>
   </div>
 </template>
@@ -72,8 +73,8 @@ const data = ref<ChartData<'line'>>({
 
 let newColor = "#2980b9" //new color to toggle to
 let pathOn = false // toggles when pressing New Path button
-let pathName;
-
+let pathName: string
+let pathPaused = false
 
 
 //when the chart becomes mounted, a point gets placed every second
@@ -120,7 +121,7 @@ function newPathButton() {
   //end path
   if (pathOn) {
 
-    axios.post(`http://localhost:8080/paths/${pathName}/stop`)
+    axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/stop`)
         .then(() => {
           pathOn = false
           console.log(`Path ${pathName} ended.`)
@@ -135,7 +136,7 @@ function newPathButton() {
 
       //WIP, need to check filename against the user's already created files,
       // then send the name to the backend where it will store the file
-      axios.post(`http://localhost:8080/paths/${pathName}`)
+      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}`)
           .then(() => console.log("New path started."))
           .catch(error => console.log(error))
       pathOn = true
@@ -149,15 +150,31 @@ function newColorButton() {
 
 
   function getRandomColor() {
-    var letters = '0123456789ABCDEF'
-    var color = '#'
-    for (var i = 0; i < 6; i++)
+    let letters = '0123456789ABCDEF'
+    let color = '#'
+    for (let i = 0; i < 6; i++)
       color += letters[Math.floor(Math.random() * 16)]
 
     return color
   }
 
   newColor = getRandomColor()
+}
+
+function PausePathButton() {
+  console.log("paused")
+  if (!pathOn)
+     return
+  if (pathPaused){
+    axios.post('http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/resume')
+    pathPaused = false
+  }
+  else {
+      axios.post('http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/pause')
+      pathPaused = true
+
+
+  }
 }
 
 </script>

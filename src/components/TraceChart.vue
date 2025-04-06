@@ -5,7 +5,7 @@
   <div class="container">
     <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
     <div class="chart-div">
-      <Scatter :data="data" :options="chartConfig.options" />
+      <Scatter :data="data" :options="chartConfig.options()" />
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@ const data = ref<ChartData<'line'>>({
 })
 
 
-let newColor = "#2980b9" //new color to toggle to
+let color = "#2980b9" //new color to toggle to
 
 
 let traceOn = false // toggles when pressing New Path button
@@ -127,8 +127,8 @@ function doOnTimeout(intervals, positions){
         data.value = chartConfig.newData(positions[i])
       else
         data.value = chartConfig.addData(data.value.datasets, positions[i])
-      data.value.datasets[0].backgroundColor = newColor
-      data.value.datasets[0].borderColor = newColor
+      data.value.datasets[0].backgroundColor = color
+      data.value.datasets[0].borderColor = color
       if (intervals.length > 1)
         setTimeout(run, intervals[++i])
     }
