@@ -114,9 +114,9 @@ export default {
         <div class="justify-self-center"><img src="../assets/usericon.png"></div>
         <div class="info">
           <label>Username</label>
-          <p>{{user.email}}</p>
-          <label>Email</label>
           <p>{{user.fullName}}</p>
+          <label>Email</label>
+          <p>{{user.email}}</p>
         </div>
         <div class="buttons">
           <!-- These buttons allow the user to access path history, and also update or deactivate account -->

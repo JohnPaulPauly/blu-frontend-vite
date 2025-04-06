@@ -1,34 +1,129 @@
-// Dashboard Page code written by Samantha Preciado
+// Dashboard Page
+<script setup>
+import bluLogo from '@/assets/images/BLUHorizontalLogo.svg';
+import bluLogoAlone from '@/assets/images/BluLogoAlone.svg';
+import NavBar from "@/components/NavBar.vue";
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+
+
+import { ref, onMounted, onUnmounted } from "vue";
+import ScatterChart from "@/components/ScatterChart.vue";
+
+//Define sidebar state , ref makes it relative
+const isSidebarOpen = ref(false);
+
+const showDropdown = ref(false);
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+//Top NavBar opens from hamburger menu on small screens and closes when clicked outside of hamburger
+const toggleSidebar =  () => {
+  console.log("Hamburger button clicked, previous state:", isSidebarOpen.value);
+  isSidebarOpen.value = !isSidebarOpen.value;
+  //await nextTick(); // Ensures Vue updates the DOM before logging
+  console.log("New sidebar state:", isSidebarOpen.value);
+};
+
+// Close sidebar when clicking outside
+const closeSidebarOnOutsideClick = (event) => {
+  const sidebar = document.getElementById("logo-sidebar");
+  if (sidebar && !sidebar.contains(event.target) && !event.target.closest('[aria-controls="logo-sidebar"]')) {
+    isSidebarOpen.value = false;
+  }
+};
+
+// Attach event listener when the component mounts
+onMounted(() => {
+  document.addEventListener("click", closeSidebarOnOutsideClick);
+});
+
+// Remove event listener when the component unmounts
+onUnmounted(() => {
+  document.removeEventListener("click", closeSidebarOnOutsideClick);
+});
+
+</script>
+
 <script>
+import navBar from "@/components/NavBar.vue";
 export default {
   name: "DashboardView",
-  methods: {
-    goToLogin() {
-      this.$router.push({ name: 'login' });
-    },
-    goToMapQueue() {
-      this.$router.push({ name: 'mapqueue' });
-    },
-    goToPathHistory() {
-      this.$router.push({ name: 'pathhistory'});
-    },
-    goToPairDevice() {
-      this.$router.push({ name: 'pairdevice' });
-    }
-  },
+  components: {
+    navBar
+  }
 }
 </script>
 
 //Contains 3 main buttons to navigate in-app features
 <template>
+  <!--
   <button @click="goToLogin">Go to Login</button>
   <div class="dashboard-buttons">
     <button @click='goToMapQueue()' :class="['btn', 'btn-map']">Join Map Queue</button>
     <button @click='goToPathHistory()' :class="['btn', 'btn-paths']">Access Previous Paths</button>
     <button @click='goToPairDevice()'  :class="['btn', 'btn-pairing']">Pair New Device</button>
-</div>
+</div> -->
 
+  <!-- TOP NAVBAR: navBar styling defined in NavBar.vue -->
+  <navBar :isSidebarOpen ="isSidebarOpen" @toggle-sidebar = "toggleSidebar"/> <!--Component called and event logged-->
 
+  <div class="flex min-h-screen pt-16 text-gray-900 ">
+    <!-- Sidebar for Dashboard-->
+    <aside  id = "logo-sidebar" :class="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen, 'sm:translate-x-0': true}" class="z-40 w-64 bg-gray-50  space-y-4 fixed  top-0 h-screen transition-transform" aria-label="Sidebar">
+      <div class="h-full pt-20  pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <ul class="space-y-2 roboto-bold">
+          <li>
+            <a href="#dashboard" class="flex items-center  p-2 text-gray-800 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <span class="ms-3">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#profile" class="flex items-center  p-2 text-gray-800 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <span class="ms-3">Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="#login" class="flex items-center  p-2 text-gray-800 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <span class="ms-3">Sign Out</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Background Overlay (for mobile) -->
+    <div
+        v-if="isSidebarOpen"
+        class="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm sm:hidden"
+        @click="toggleSidebar"
+    ></div>
+
+    <!-- Main Content -->
+    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
+      <!-- Header -->
+         <ScatterChart/>
+          <div class="relative">
+            <button @click="toggleDropdown">
+              <Settings class="text-white" />
+            </button>
+            <div v-if="showDropdown" class="absolute right-0 mt-2 w-40 bg-gray-800 rounded shadow-lg p-2">
+              <a href="#/profile" class="flex items-center gap-2 p-2 hover:bg-gray-700 rounded">
+                <User class="text-white" size="16" /> Profile
+              </a>
+              <a href="/settings" class="block p-2 hover:bg-gray-700 rounded">Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Content Area with Gradient -->
+      <div class="flex-1 ml-64 relative px-6 pt-4 lg:px-8">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+          <div class="relative left-[calc(50%-11rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-[#9cc6ff] to-[#243daf] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
+          </div>
+        </div>
+      </div>
 </template>
 
 <style scoped>
