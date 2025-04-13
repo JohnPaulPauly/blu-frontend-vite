@@ -8,11 +8,12 @@ import {
     AccessMapView,
     AdminView,
     UserProfileView,
-    UserVerificationView, VerificationConfirmedView
+    UserVerificationView, VerificationConfirmedView, PathHistoryView
 } from "@/views";
 import NavBar from "@/components/NavBar.vue";
 import practice from "@/components/practice.vue";
 import TraceMapView from "@/views/TraceMapView.vue";
+import SearchBar from "@/components/SearchBar.vue";
 import registerDeviceView from "@/views/RegisterDeviceView.vue";
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
     { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView },
     { path: '/registerdevice', name: "registerdevice", component: registerDeviceView},
     { path: '/trace', name: "trace", component: TraceMapView},
+    { path: '/registerdevice', name: "registerdevice", component: registerDeviceView},
+    { path: '/history', name: "PathhistoryView", component: PathHistoryView },
+    { path: '/searchbar', name: "searchBarPreView", component: SearchBar }
+
 ]
 
 const router = createRouter({

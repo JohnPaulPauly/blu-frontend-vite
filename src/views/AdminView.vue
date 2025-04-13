@@ -1,6 +1,8 @@
 <script>
 import axios from 'axios';
+import SearchBar from "@/components/SearchBar.vue";
 export default {
+  components: {SearchBar},
   data() {
     return {
       users: [
@@ -75,6 +77,10 @@ export default {
   <div class="p-4">
     <h1>Admin Page</h1>
     <h2 class="text-xl font-bold mb-4">User List</h2>
+
+    <!--Search Bar-->
+    <SearchBar/>
+
     <table class="min-w-full border border-gray-300">
       <thead>
       <tr class="bg-gray-100">
