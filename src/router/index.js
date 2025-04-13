@@ -13,6 +13,7 @@ import {
 import NavBar from "@/components/NavBar.vue";
 import practice from "@/components/practice.vue";
 import TraceMapView from "@/views/TraceMapView.vue";
+import registerDeviceView from "@/views/RegisterDeviceView.vue";
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
@@ -25,8 +26,9 @@ const routes = [
     { path: '/adminview', name: "adminview", component: AdminView},
     { path: '/profile', name: "profile", component: UserProfileView},
     { path: '/userverification', name: "userverification", component: UserVerificationView },
+    { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView },
+    { path: '/registerdevice', name: "registerdevice", component: registerDeviceView},
     { path: '/trace', name: "trace", component: TraceMapView},
-    { path: '/verificationconfirmed', name: "verificationconfirmed", component: VerificationConfirmedView }
 ]
 
 const router = createRouter({
