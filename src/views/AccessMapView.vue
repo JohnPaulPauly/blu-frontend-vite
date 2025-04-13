@@ -1,6 +1,5 @@
 <!--Displays map. WIP-->
 <template>
-  <button @click="color()"></button>
   <div class="content-center">
     <ScatterChart/>
   </div>

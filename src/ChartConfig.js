@@ -32,26 +32,30 @@ export const addData = (dataset, position) => ({
     ]
 })
 
+export const clearData = () => ({
+    datasets: []
+})
+
 
 //options for scatter chart, sets border size
-export const options = {
+export const options  = (size=20) => ({
     legend: false,
     responsive: true,
-    maintainAspectRatio: false,
-    //aspectRatio: 1,
+    maintainAspectRatio: true,
+    aspectRatio: 1,
     showLine: true,
     scales: {
         x: {
             position: "top",
-            min: -10,//these values will be set for whatever the device's size is
-            max: 10
+            min: -(size / 2),//these values will be set for whatever the device's size is
+            max: (size / 2)
         },
         y: {
             position: "right",
-            min: -10,//these values will be set for whatever the device's size is
-            max: 10
+            min: -(size / 2),//these values will be set for whatever the device's size is
+            max: (size / 2)
         },
     }
-}
+})
 
 
