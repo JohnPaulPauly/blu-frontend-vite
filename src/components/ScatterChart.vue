@@ -182,7 +182,7 @@ function newPathButton() {
   //end path
   if (pathOn) {
 
-    axios.post(`http://localhost:8080/paths/${pathName}/stop`)
+    axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/stop`)
         .then(() => {
           pathOn = false
           console.log(`Path ${pathName} ended.`)
@@ -197,7 +197,7 @@ function newPathButton() {
 
       //WIP, need to check filename against the user's already created files,
       // then send the name to the backend where it will store the file
-      axios.post(`http://localhost:8080/paths/${pathName}`)
+      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}`)
           .then(() => console.log("New path started."))
           .catch(error => console.log(error))
       pathOn = true
