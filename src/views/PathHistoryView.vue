@@ -3,15 +3,17 @@
 import axios from 'axios';
 import bluLogo from "@/assets/images/BluCombinedLogo.svg";
 import SearchBar from "@/components/SearchBar.vue";
+import { ArrowDownOnSquareStackIcon, TrashIcon} from '@heroicons/vue/24/solid';
 export default{
-  components: {SearchBar},
+  components: {SearchBar, ArrowDownOnSquareStackIcon, TrashIcon},
   // Default paths and sorting order
   data() {
     return {
       paths: [],
       filteredPaths: [], //will hold search results
       sortBy: null,
-      sortOrder: 1
+      sortOrder: 1,
+      dropdownOpen: null, // Track which dropdown is open
     };
   },
   // Load all the paths under the user
@@ -19,6 +21,9 @@ export default{
     await this.listHistory();
   },
   methods: {
+    toggleDropdown(index) {
+      this.dropdownOpen = this.dropdownOpen === index ? null : index;
+    },
     // Lists all paths
     async listHistory() {
       // Fetches all paths from backend
@@ -73,7 +78,7 @@ export default{
         return 0;
       });
     }
-  }
+  },
 };
 </script>
 
@@ -96,7 +101,7 @@ export default{
           @update:results="filteredPaths = $event"
       />
 
-      <div class="overflow-y-auto max-h-[500px] border border-gray-300">
+      <div class="border border-gray-300">
         <table class="min-w-full text-center">
           <thead class="bg-gray-100 sticky top-0">
           <tr>
@@ -121,13 +126,30 @@ export default{
             <td class="border px-6 py-2">{{ path.pathName }}</td>
             <td class="border px-6 py-2">{{ path.ipAddress }}</td>
             <td class="border px-6 py-2">{{ path.time }}</td>
-            <td class="border px-6 py-2">
+            <td class="border px-6 py-2 relative">
+              <div class="flex flex-col items-center gap-2">
               <button
                   @click="deletePath(index)"
                   class="bg-red-500 text-white px-3 py-1 rounded"
               >
-                Delete
+                <TrashIcon class="w-5 h-5" />
               </button>
+
+              <!-- Download dropdown -->
+              <div class=" inline-block text-left">
+                <button @click="toggleDropdown(index)" class="bg-blu700 hover:bg-blu600 text-white font-bold py-1 px-3 rounded">
+                  <ArrowDownOnSquareStackIcon class="w-5 h-5" />
+                </button>
+                <div v-if="dropdownOpen === index" class="absolute left-full top-0 ml-2 w-32 bg-white border rounded shadow-lg z-50">
+                  <button @click="downloadAsJSON(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                    JSON
+                  </button>
+                  <button @click="downloadAsCSV(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                    CSV
+                  </button>
+                </div>
+              </div>
+              </div>
             </td>
           </tr>
           </tbody>
@@ -148,4 +170,9 @@ th {
   cursor: pointer;
   user-select: none;
 }
+td {
+  position: relative;
+  overflow: visible; /* <--- important so dropdown is not clipped */
+}
+
 </style>
