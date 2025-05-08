@@ -2,26 +2,37 @@
   Used in:
     AccessMapView-->
 <template>
-  <div class="container">
-
-    <button class="button-c" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
-    <button class="button-c" @click="newColorButton()">Random Color</button>
-    <button class="button-c" @click="PausePathButton()">{{pathPaused ? 'Unpause' : 'Pause'}}</button>
-    <p><span id="stopwatch">0:00</span></p>
+  <div class="rowize">
     <div class="chart-div">
       <Scatter :data="data" :options="chartConfig.options()" />
     </div>
+    <div class="columnize">
+
+      <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
+      <button class="button-pause" @click="PausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
+      <button class="button-new-color" @click="newColorButton()">Random Color</button>
+      <p><span id="stopwatch">0:00</span></p>
+    </div>
+
+
   </div>
 </template>
 
 <style scoped>
-.container {
+.columnize {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.button-c {
+.rowize {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+.button-new-path {
   margin-bottom: 10px;
   padding: 8px 16px;
   font-size: 16px;
@@ -31,6 +42,49 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.button-end-path {
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #ef1022;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-new-color {
+  margin-bottom: 5px;
+  padding: 4px 8px;
+  font-size: 14px;
+  background-color: #dbe0e0;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-pause {
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  font-size: 30px;
+  background-color: #dbe0e0;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button-unpause {
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #dbe0e0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 .button-c:hover {
   background-color: #2980b9;
@@ -40,8 +94,6 @@
   width: 500px;
   height: 500px;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
 
@@ -101,7 +153,6 @@ onMounted(() => {
         console.log(`Received X: ${position.x}`)
         console.log(`Received Y: ${position.y}`)
 
-
         if (pathOn)
         {
           if (!pathPaused)
@@ -154,6 +205,8 @@ function newPathButton() {
             .catch(error => console.log(error))
         pathOn = true
       }
+      else
+        break
     }
   }
 
