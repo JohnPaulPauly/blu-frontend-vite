@@ -123,4 +123,11 @@ export const removePoints = (datasets) => ({
     ]
 })
 
+export const setColor = (datasets, color) => {
+    let tmpdatasets = datasets
+    tmpdatasets[0].backgroundColor = color
+    tmpdatasets[0].borderColor = color
+    return {datasets: tmpdatasets}
+}
+
 

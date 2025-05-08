@@ -4,14 +4,14 @@
 <template>
   <div class="rowize">
     <div class="chart-div">
-      <Scatter :data="data" :options="chartConfig.options()" />
+      <Scatter :data="data" :options="options()" />
     </div>
     <div class="columnize">
 
       <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
-      <button class="button-pause" @click="PausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
+      <button class="button-pause" id="pause" @click="pausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
       <button class="button-new-color" @click="newColorButton()">Random Color</button>
-      <button class="button-c" @click="addPointsButton()">{{pointsOn ? 'Remove points' : 'Add points'}}</button>
+      <button class="button-new-color" @click="addPointsButton()">{{pointsOn ? 'Remove points' : 'Add points'}}</button>
       <p><span id="stopwatch">0:00</span></p>
     </div>
 
@@ -79,16 +79,23 @@
   margin-bottom: 10px;
   padding: 8px 16px;
   font-size: 16px;
-  background-color: #dbe0e0;
+  background-color: #c0c9c9;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
+.button-new-color:hover {
+  background-color:#adb8b8;
+}
 
-.button-c:hover {
+.button-new-path:hover {
   background-color: #2980b9;
+}
+
+.button-end-path:hover {
+  background-color: #c00d1c
 }
 
 .chart-div {
@@ -131,9 +138,9 @@ const data = ref<ChartData<'line'>>({
 })
 
 let newColor = "#2980b9" //new color to toggle to
-let pathOn = false // toggles when pressing New Path button
+let pathOn = ref(false) // toggles when pressing New Path button
 let pathName: string
-let pathPaused = false
+let pathPaused = ref(false)
 let pathTime = 0
 let Interval ;
 let appendStopwatch;
@@ -141,7 +148,9 @@ let tens = 0;
 const deviceSize = 20//change to device size get mapping
 const pointRadius = .3
 let OutofBoundsAlready =  false
-let pointsOn = false
+let pointsOn = ref(false)
+
+
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
@@ -161,10 +170,11 @@ onMounted(() => {
         var position = JSON.parse(message.body)
         console.log(`Received Position: (${position.x}, ${position.y}), Timestamp: ${position.timestamp}`)
 
-        if (pathOn)
+        if (pathOn.value)
         {
-          if (!pathPaused)
+          if (!pathPaused.value)
           data.value = chartConfig.addData(data.value.datasets, position)
+        }
         else
           data.value = chartConfig.newData(data.value.datasets, position)
 
@@ -177,9 +187,9 @@ onMounted(() => {
         else
           OutofBoundsAlready = false
 
-        if (pointsOn) {
+        if (pointsOn.value) {
           //data.value = chartConfig.addPoint(data.value.datasets, {x: 0, y: 0})
-          if (data.value.datasets.length > 1 && pathOn)
+          if (data.value.datasets.length > 1 && pathOn.value)
             for (let i = 1; i < data.value.datasets.length; i++)
               if  (distToSegment(data.value.datasets[i].data[0], data.value.datasets[0].data[data.value.datasets[0].data.length-2], data.value.datasets[0].data[data.value.datasets[0].data.length-1]) <= pointRadius) {
                 console.log("point crossed")
@@ -187,14 +197,13 @@ onMounted(() => {
                 data.value.datasets[i].borderColor = "#ffa0a0"
             }
         }
-        else if (!pointsOn && data.value.datasets != undefined && data.value.datasets.length > 1){
+        else if (!pointsOn.value && data.value.datasets != undefined && data.value.datasets.length > 1){
           data.value = chartConfig.removePoints(data.value.datasets)
         }
         //colors are updated
-        if (data.value.datasets != undefined) {
-          data.value.datasets[0].backgroundColor = newColor
-          data.value.datasets[0].borderColor = newColor
-        }
+
+        data.value.datasets[0].backgroundColor = newColor
+        data.value.datasets[0].borderColor = newColor
       });
     },
   });
@@ -211,11 +220,11 @@ function newPathButton() {
 
 
   //end path
-  if (pathOn) {
+  if (pathOn.value) {
 
     axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/stop`)
         .then((response) => {
-          pathOn = false
+          pathOn.value = false
           console.log(`Path ${pathName} ended.`);
           console.log(response)
           clearInterval(Interval)
@@ -226,7 +235,7 @@ function newPathButton() {
   }
   //new path
   else {
-    while (!pathOn) {
+    while (!pathOn.value) {
       pathName = prompt(' Please input Path name:', 'mypath')
       if (pathName != null) {
         //WIP, need to check filename against the user's already created files,
@@ -238,13 +247,14 @@ function newPathButton() {
                                  console.log(response);
             })
             .catch(error => console.log(error))
-        pathOn = true
+        pathOn.value = true
       }
       else
         break
     }
   }
 }
+
 
 
 function newColorButton() {
@@ -259,22 +269,28 @@ function newColorButton() {
 
     return color
   }
+  if (data.value.datasets != undefined) {
 
-  newColor = getRandomColor()
+    newColor = getRandomColor()
+    //data.value = chartConfig.setColor(data.value.datasets, newColor)
+  }
 }
 
-function PausePathButton() {
+
+function pausePathButton() {
   console.log("paused")
-  if (!pathOn)
+  if (!pathOn.value)
      return
-  if (pathPaused){
-    axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/resume`)
-    pathPaused = false
+  if (pathPaused.value){
+
+    axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/resume`).then(() => pathPaused.value = false)
+
 
   }
   else {
-      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/pause`)
-      pathPaused = true
+
+      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/pause`).then(() => pathPaused.value = true)
+
 
 
   }
@@ -283,10 +299,10 @@ function PausePathButton() {
 
 function addPointsButton(){
 
-  if (pointsOn)
+  if (pointsOn.value)
     data.value = chartConfig.removePoints(data.value.datasets)
 
-  pointsOn = !pointsOn
+  pointsOn.value = !pointsOn.value
   chartConfig.flipPointsOn()
 
 }
@@ -312,7 +328,7 @@ function addPointsButton(){
     },
   },
   onClick: (event,elements,chart) => {
-    if (pointsOn) {
+    if (pointsOn.value) {
       const canvasPosition = helpers.getRelativePosition(event, chart);
       const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
       const dataY = chart.scales.y.getValueForPixel(canvasPosition.y);
@@ -342,7 +358,7 @@ function distToSegment(point, prevPosition, currPosition) { return Math.sqrt(dis
 
 
 function incTimer() {
-  if (!pathPaused) {
+  if (!pathPaused.value) {
     tens++
     const secondsDisplay = Math.floor(tens / 100)
     const tensDisplay = tens % 100
