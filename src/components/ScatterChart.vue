@@ -3,9 +3,11 @@
     AccessMapView-->
 <template>
   <div class="container">
+
     <button class="button-c" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
     <button class="button-c" @click="newColorButton()">Random Color</button>
     <button class="button-c" @click="PausePathButton()">{{pathPaused ? 'Unpause' : 'Pause'}}</button>
+    <p><span id="stopwatch">0:00</span></p>
     <div class="chart-div">
       <Scatter :data="data" :options="chartConfig.options()" />
     </div>
@@ -75,11 +77,14 @@ let newColor = "#2980b9" //new color to toggle to
 let pathOn = false // toggles when pressing New Path button
 let pathName: string
 let pathPaused = false
-
+let pathTime = 0
+let Interval ;
+let appendStopwatch;
+let tens = 0;
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
-
+   appendStopwatch = document.getElementById("stopwatch")
   const client = new Client({
 
     brokerURL: 'http://localhost:8080/ws/livepath',
@@ -99,6 +104,7 @@ onMounted(() => {
 
         if (pathOn)
         {
+          if (!pathPaused)
           data.value = chartConfig.addData(data.value.datasets, position)
         }
         else
@@ -122,9 +128,12 @@ function newPathButton() {
   if (pathOn) {
 
     axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/stop`)
-        .then(() => {
+        .then((response) => {
           pathOn = false
-          console.log(`Path ${pathName} ended.`)
+          console.log(`Path ${pathName} ended.`);
+          console.log(response)
+          clearInterval(Interval)
+          tens = 0
         })
         .catch(error => console.error(error))
 
@@ -133,13 +142,18 @@ function newPathButton() {
   else {
     while (!pathOn) {
       pathName = prompt(' Please input Path name:', 'mypath')
-
-      //WIP, need to check filename against the user's already created files,
-      // then send the name to the backend where it will store the file
-      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}`)
-          .then(() => console.log("New path started."))
-          .catch(error => console.log(error))
-      pathOn = true
+      if (pathName != null) {
+        //WIP, need to check filename against the user's already created files,
+        // then send the name to the backend where it will store the file
+        clearInterval(Interval)
+        Interval = setInterval(incTimer, 10)
+        axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}`)
+            .then((response) => {console.log("New path started.");
+                                 console.log(response);
+            })
+            .catch(error => console.log(error))
+        pathOn = true
+      }
     }
   }
 
@@ -166,15 +180,30 @@ function PausePathButton() {
   if (!pathOn)
      return
   if (pathPaused){
-    axios.post('http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/resume')
+    axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/resume`)
     pathPaused = false
+
   }
   else {
-      axios.post('http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/pause')
+      axios.post(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${pathName}/pause`)
       pathPaused = true
 
 
   }
 }
+
+function incTimer() {
+  if (!pathPaused) {
+    tens++
+    const secondsDisplay = Math.floor(tens / 100)
+    const tensDisplay = tens % 100
+
+    if (tensDisplay <= 9)
+      appendStopwatch.innerHTML = secondsDisplay + ":0" + tensDisplay
+    else
+      appendStopwatch.innerHTML = secondsDisplay + ":" + tensDisplay
+  }
+}
+
 
 </script>
