@@ -11,6 +11,7 @@
       <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
       <button class="button-pause" @click="PausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
       <button class="button-new-color" @click="newColorButton()">Random Color</button>
+      <button class="button-c" @click="addPointsButton()">{{pointsOn ? 'Remove points' : 'Add points'}}</button>
       <p><span id="stopwatch">0:00</span></p>
     </div>
 
@@ -94,6 +95,8 @@
   width: 500px;
   height: 500px;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 
@@ -117,6 +120,8 @@ import {
 import { Scatter } from 'vue-chartjs'
 import * as chartConfig from '@/ChartConfig'
 import {Client} from "@stomp/stompjs";
+import * as helpers from "chart.js/helpers";
+
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -133,6 +138,10 @@ let pathTime = 0
 let Interval ;
 let appendStopwatch;
 let tens = 0;
+const deviceSize = 20//change to device size get mapping
+const pointRadius = .3
+let OutofBoundsAlready =  false
+let pointsOn = false
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
@@ -150,25 +159,51 @@ onMounted(() => {
 
         //Unlike axios, StompJS does not automatically translate Javascript Objects :(
         var position = JSON.parse(message.body)
-        console.log(`Received X: ${position.x}`)
-        console.log(`Received Y: ${position.y}`)
+        console.log(`Received Position: (${position.x}, ${position.y}), Timestamp: ${position.timestamp}`)
 
         if (pathOn)
         {
           if (!pathPaused)
           data.value = chartConfig.addData(data.value.datasets, position)
-        }
         else
-          data.value = chartConfig.newData(position)
+          data.value = chartConfig.newData(data.value.datasets, position)
 
+        //alert if out of bounds, only alert once until returning to the map
+        if (Math.abs(position.x) > deviceSize/2 || Math.abs(position.x) > deviceSize/2)
+          if (!OutofBoundsAlready) {
+            alert("tracker leaving the devices boundaries! this may lead to less accurate tracking.")
+            OutofBoundsAlready = true
+          }
+        else
+          OutofBoundsAlready = false
+
+        if (pointsOn) {
+          //data.value = chartConfig.addPoint(data.value.datasets, {x: 0, y: 0})
+          if (data.value.datasets.length > 1 && pathOn)
+            for (let i = 1; i < data.value.datasets.length; i++)
+              if  (distToSegment(data.value.datasets[i].data[0], data.value.datasets[0].data[data.value.datasets[0].data.length-2], data.value.datasets[0].data[data.value.datasets[0].data.length-1]) <= pointRadius) {
+                console.log("point crossed")
+                data.value.datasets[i].backgroundColor = "#ffa0a0"
+                data.value.datasets[i].borderColor = "#ffa0a0"
+            }
+        }
+        else if (!pointsOn && data.value.datasets != undefined && data.value.datasets.length > 1){
+          data.value = chartConfig.removePoints(data.value.datasets)
+        }
         //colors are updated
-        data.value.datasets[0].backgroundColor = newColor
-        data.value.datasets[0].borderColor = newColor
+        if (data.value.datasets != undefined) {
+          data.value.datasets[0].backgroundColor = newColor
+          data.value.datasets[0].borderColor = newColor
+        }
       });
     },
   });
   client.activate();
 })
+
+
+
+
 
 
 function newPathButton() {
@@ -209,8 +244,8 @@ function newPathButton() {
         break
     }
   }
-
 }
+
 
 function newColorButton() {
   //sets the point color to a new color
@@ -244,6 +279,67 @@ function PausePathButton() {
 
   }
 }
+
+
+function addPointsButton(){
+
+  if (pointsOn)
+    data.value = chartConfig.removePoints(data.value.datasets)
+
+  pointsOn = !pointsOn
+  chartConfig.flipPointsOn()
+
+}
+
+ const options  = (size=20) => ({
+  legend: false,
+  responsive: true,
+  maintainAspectRatio: true,
+  aspectRatio: 1,
+  showLine: true,
+  animation: false,
+  events: ["click"],
+  scales: {
+    x: {
+      position: "top",
+      min: -(size / 2),//these values will be set for whatever the device's size is
+      max: (size / 2)
+    },
+    y: {
+      position: "right",
+      min: -(size / 2),//these values will be set for whatever the device's size is
+      max: (size / 2)
+    },
+  },
+  onClick: (event,elements,chart) => {
+    if (pointsOn) {
+      const canvasPosition = helpers.getRelativePosition(event, chart);
+      const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
+      const dataY = chart.scales.y.getValueForPixel(canvasPosition.y);
+      data.value = chartConfig.addPoint(chart.data.datasets, {x: dataX, y: dataY})
+    }
+  },
+  plugins: {
+    legend: {
+      display: false
+    }
+  }
+})
+
+//algorithm for finding a points distance from a line segment
+
+function sqr(x) { return x * x }
+function dist2(v, w) { return sqr(v.x - w.x) + sqr(v.y - w.y) }
+function distToSegmentSquared(p, v, w) {
+  var l2 = dist2(v, w);
+  if (l2 == 0) return dist2(p, v);
+  var t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+  t = Math.max(0, Math.min(1, t));
+  return dist2(p, { x: v.x + t * (w.x - v.x),
+    y: v.y + t * (w.y - v.y) });
+}
+function distToSegment(point, prevPosition, currPosition) { return Math.sqrt(distToSegmentSquared(point, prevPosition, currPosition)); }
+
 
 function incTimer() {
   if (!pathPaused) {

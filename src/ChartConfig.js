@@ -1,27 +1,65 @@
+import {Chart} from "chart.js";
+
+let pointsOn = false
+
+export function flipPointsOn() {
+    pointsOn = !pointsOn
+}
+
 function getRandomInt() {
     //returns random integer from -10 to 10, inclusive.
     return Math.floor(Math.random() * (21)) - 10
 }
-export const newData = (position) => ({
-    datasets: [
-        {
-            data: [
-                {
-                    x: position.x,
-                    y: position.y
-                }
-                ]
 
+export const newData = (datasets, position) => {
+
+    if (datasets.length === 0) {
+        return {
+            datasets: [
+                {
+                    data: [
+                        {
+                            x: position.x,
+                            y: position.y
+                        }]
+
+
+                }]
         }
-    ]
-})
+    }
+    let newDatasets = [{
+        data: [
+            {
+                x: position.x,
+                y: position.y
+            }
+        ]
+    }]
+    if (datasets.length > 1)
+        return {datasets: newDatasets.concat(datasets.slice(1))}
+
+    return {datasets: newDatasets}
+}
 
 
 //scatter chart data with one point (-10 <= x,y <= 10)
-export const addData = (dataset, position) => ({
-    datasets: [
+export const addData = (datasets, position) => {
+    if (datasets.length === 1)
+        return {
+        datasets: [
+            {
+                data: datasets[0].data.concat([
+                    {
+                        x: position.x,
+                        y: position.y
+                    }])
+
+
+            }
+        ]}
+    return    { datasets: [
         {
-            data: dataset[0].data.concat([
+            data: datasets[0].data.concat([
                 {
                     x: position.x,
                     y: position.y
@@ -29,8 +67,9 @@ export const addData = (dataset, position) => ({
 
 
         }
-    ]
-})
+    ].concat(datasets.slice(1))}
+
+}
 
 export const clearData = () => ({
     datasets: []
@@ -38,24 +77,50 @@ export const clearData = () => ({
 
 
 //options for scatter chart, sets border size
-export const options  = (size=20) => ({
-    legend: false,
-    responsive: true,
-    maintainAspectRatio: true,
-    aspectRatio: 1,
-    showLine: true,
-    scales: {
-        x: {
-            position: "top",
-            min: -(size / 2),//these values will be set for whatever the device's size is
-            max: (size / 2)
-        },
-        y: {
-            position: "right",
-            min: -(size / 2),//these values will be set for whatever the device's size is
-            max: (size / 2)
-        },
+
+export const addPoint = (datasets, position) => {
+    if (datasets === undefined)
+        return {
+            datasets: [
+                {
+                    data: [
+                    ],
+
+                },
+                {
+                    data: [
+                        {
+                            x: position.x,
+                            y: position.y,
+
+
+                        }
+                    ],
+                    backgroundColor: "#ff0000",
+                    borderColor: "#ff0000",
+                }]
+        }
+    return {
+        datasets: datasets.concat(
+            [{
+                data: [
+                    {
+                        x: position.x,
+                        y: position.y,
+
+
+                    }
+                ],
+                backgroundColor: "#ff0000",
+                borderColor: "#ff0000",
+            }])
     }
+}
+
+export const removePoints = (datasets) => ({
+    datasets: [
+        datasets[0]
+    ]
 })
 
 
