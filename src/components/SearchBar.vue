@@ -49,6 +49,7 @@ const handleSearch = () => {
 
   if(!q){
     results.value = props.data //if no query just return all data
+    emit('update:results', results.value) //send to parent
   } else {
     const fuseResults = fuse.search(q)
     results.value = fuseResults.map(r => r.item) // retrieve results and save to value

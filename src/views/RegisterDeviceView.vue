@@ -46,6 +46,7 @@ export default{
       };
       await axios.post("http://localhost:8080/devices/ntsimerekis@yahoo.com", payload)
       this.activeDevice = device;
+      localStorage.setItem("activeDevice", JSON.stringify(device));
       console.log(`${device.name}, " is now the active device. with IP: ", ${device.ipAddress}`);
     },
     // Stores active device to save
