@@ -4,7 +4,7 @@ import {computed, ref} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import NavBar from "@/components/NavBar.vue";
 import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon, MagnifyingGlassCircleIcon, BoltIcon, MapPinIcon } from '@heroicons/vue/24/outline'
-import bluLogo from "@/assets/images/BLUHorizontalLogo.svg";
+import bluLogo from "@/assets/images/BluHorizontalLogo.svg";
 import bluLogoAlone from "@/assets/images/BluLogoAlone.svg";
 import {Dialog, DialogPanel} from "@headlessui/vue";
 import {Bars3Icon, XMarkIcon} from "@heroicons/vue/24/outline/index.js";

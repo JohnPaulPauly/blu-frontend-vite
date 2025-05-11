@@ -1,5 +1,5 @@
 <script setup>
-import bluLogo from '@/assets/images/BLUHorizontalLogo.svg';
+import bluLogo from '@/assets/images/BluHorizontalLogo.svg';
 import bluLogoAlone from '@/assets/images/BluLogoAlone.svg';
 
 import { Dialog, DialogPanel } from '@headlessui/vue';
