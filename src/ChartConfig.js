@@ -123,6 +123,47 @@ export const removePoints = (datasets) => ({
     ]
 })
 
+export const addAnnotatePoint = (datasets, position, message) => {
+    if (datasets === undefined)
+        return {
+            datasets: [
+                {
+                    data: [
+                    ],
+
+                },
+                {
+                    data: [
+                        {
+                            x: position.x,
+                            y: position.y,
+
+
+                        }
+                    ],
+                    backgroundColor: "#ff0000",
+                    borderColor: "#ff0000",
+                }]
+        }
+    return {
+        datasets: datasets.concat(
+            [{
+                label: message,
+                data: [
+                    {
+                        x: position.x,
+                        y: position.y,
+
+
+                    }
+                ],
+                backgroundColor: "#ff0000",
+                borderColor: "#ff0000",
+            }])
+    }
+}
+
+
 export const setColor = (datasets, color) => {
     let tmpdatasets = datasets
     tmpdatasets[0].backgroundColor = color
