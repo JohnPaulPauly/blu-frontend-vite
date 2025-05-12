@@ -4,8 +4,9 @@
 <template>
   <div class="container">
     <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
+    <button class="button-c" @click="AnnotateButton()">{{ annotateOn ? 'Stop' : 'Annotate' }}</button>
     <div class="chart-div">
-      <Scatter :data="data" :options="chartConfig.options()" />
+      <Scatter :data="data" :options="traceOptions()" />
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import {
 import { Scatter } from 'vue-chartjs'
 import * as chartConfig from '@/ChartConfig'
 import {Client} from "@stomp/stompjs";
+import * as helpers from "chart.js/helpers";
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement)
 
@@ -69,13 +71,15 @@ const data = ref<ChartData<'line'>>({
   datasets: []
 })
 
-
+let annotateOn = ref(false)
 let color = "#2980b9" //new color to toggle to
 
 
 let traceOn = false // toggles when pressing New Path button
 let isDisabled = false
 let outer_sem = 0
+
+let annotateStrings = []
 
 function TracePathButton() {
   //traces a path
@@ -87,6 +91,8 @@ function TracePathButton() {
 
     traceOn = false
     data.value = chartConfig.clearData()
+    if (annotateOn.value)
+      AnnotateButton()
   }
   //start tracing path
   else {
@@ -97,7 +103,7 @@ function TracePathButton() {
     traceOn = true
     data.value = chartConfig.clearData()
     //refactor csv
-    const dataTimestamps = [0,2000,1000,3000]//change to real data when this gets plugged in
+    const dataTimestamps = [0,1000,2000,3000]//change to real data when this gets plugged in
     const positions = [{x:1,y:1},{x:2,y:6},{x:3,y:3},{x:4,y:4}]
 
 
@@ -124,19 +130,76 @@ function doOnTimeout(intervals, positions){
     if (i < intervals.length && traceOn && outer_sem === inner_sem) {
       console.log("data traced")
       if (i === 0)
-        data.value = chartConfig.newData(positions[i])
+        data.value = chartConfig.newData(data.value.datasets, positions[i])
       else
         data.value = chartConfig.addData(data.value.datasets, positions[i])
       data.value.datasets[0].backgroundColor = color
       data.value.datasets[0].borderColor = color
       if (intervals.length > 1)
-        setTimeout(run, intervals[++i])
+        setTimeout(run, intervals[i+1] - intervals[i++])
     }
 
   }
   run();
 
 }
+
+function AnnotateButton(){
+
+  if(traceOn)
+    annotateOn.value = !annotateOn.value
+
+}
+
+const traceOptions  = (size=20) => ({
+  legend: false,
+  responsive: true,
+  maintainAspectRatio: true,
+  aspectRatio: 1,
+  showLine: true,
+  animation: false,
+  events: ["click"],
+  scales: {
+    x: {
+      position: "top",
+      min: -(size / 2),//these values will be set for whatever the device's size is
+      max: (size / 2)
+    },
+    y: {
+      position: "right",
+      min: -(size / 2),//these values will be set for whatever the device's size is
+      max: (size / 2)
+    },
+  },
+  onClick: (event,elements,chart) => {
+    if (annotateOn.value && traceOn) {
+      const canvasPosition = helpers.getRelativePosition(event, chart);
+      const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
+      const dataY = chart.scales.y.getValueForPixel(canvasPosition.y);
+      const message = prompt("annotation message:")
+      data.value = chartConfig.addAnnotatePoint(chart.data.datasets, {x: dataX, y: dataY,}, message)
+    }
+  },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: function(context) {
+          const dataset = context.dataset;
+          const { x, y } = context.parsed;
+
+
+          const baseText = dataset.customTooltip || dataset.label || 'Data';
+
+          return `${baseText}: (x=${x}, y=${y})`;
+        }
+      }
+    },
+    legend: {
+      display: false
+    }
+  }
+})
+
 
 
 </script>
