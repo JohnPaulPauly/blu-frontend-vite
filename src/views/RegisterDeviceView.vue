@@ -73,10 +73,9 @@ export default{
 
         await axios.post("http://localhost:8080/devices/ntsimerekis@yahoo.com", payload);
 
-        this.devices.push({
-          name: this.newDeviceName,
-          ipAddress: this.newDeviceIp,
-        });
+        const response = await axios.get("http://localhost:8080/devices/ntsimerekis@yahoo.com");
+        this.devices = response.data;
+        console.log("Fetched devices:", this.devices);
 
         this.message = "Device successfully added.";
         this.messageType = "success";
@@ -93,7 +92,8 @@ export default{
       const device = this.devices[index];
 
       try {
-        await axios.delete(`http://localhost:8080/devices/ntsimerekis@yahoo.com/${device.ipAddress}`);
+        const strippedIP = device.ipAddress.replace(/[\[\]]/g, '');
+        await axios.delete(`http://localhost:8080/devices/ntsimerekis@yahoo.com/${strippedIP}`);
 
         this.devices.splice(index, 1);
         this.message = "Device deleted successfully.";
