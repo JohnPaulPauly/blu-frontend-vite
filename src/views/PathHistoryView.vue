@@ -62,7 +62,7 @@ export default{
     async deletePath(index){
       const path = this.paths[index];
       try {
-        await axios.delete(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${path.name}`);
+        //await axios.delete(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${path.name}`);
         this.paths.splice(index, 1);
         this.filteredPaths = [...this.paths];
         this.message = "Path deleted successfully.";

@@ -8,7 +8,7 @@ import {
     AccessMapView,
     AdminView,
     UserProfileView,
-    UserVerificationView, VerificationConfirmedView, PathHistoryView
+    UserVerificationView, VerificationConfirmedView, PathHistoryView, ForgotPasswordView, ReplacePasswordView,
 } from "@/views";
 import NavBar from "@/components/NavBar.vue";
 import practice from "@/components/practice.vue";
@@ -18,6 +18,8 @@ import registerDeviceView from "@/views/RegisterDeviceView.vue";
 
 const routes = [
     { path: '/dashboard', name: "dashboard", component: DashboardView },
+    { path: '/forgotPassword', name: "forgotPassword", component: ForgotPasswordView },
+    { path: '/replacePassword', name: "replacePassword", component: ReplacePasswordView },
     { path: '/register', name: "register", component: RegisterView },
     { path: '/about', name: "about", component: AboutView },
     { path: '/login', name: "login", component: LoginView },

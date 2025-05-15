@@ -165,7 +165,6 @@ export default {
             <button @click="toggleDropdown">
               <Settings class="text-white" />
             </button>
-
             <div v-if="showDropdown" class="absolute right-0 mt-2 w-40 bg-gray-800 rounded shadow-lg p-2">
               <a href="/profile" class="flex items-center gap-2 p-2 hover:bg-gray-700 rounded">
                 <User class="text-white" size="16" /> Profile
