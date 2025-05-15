@@ -31,7 +31,7 @@ import bluLogo from '@/assets/images/BluCombinedLogo.svg';
 
       <!-- Forgot Password -->
       <div class="text-left">
-        <a href="#" class="text-#1e1e1e text-sm underline leading-snug font-primary">Forgot Password?</a>
+        <a href="#/forgotPassword" class="text-#1e1e1e text-sm underline leading-snug font-primary">Forgot Password?</a>
       </div>
 
       <!-- Create an Account Link -->

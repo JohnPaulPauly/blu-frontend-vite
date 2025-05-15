@@ -4,10 +4,9 @@ import bluLogo from '@/assets/images/BluHorizontalLogo.svg';
 import bluLogoAlone from '@/assets/images/BluLogoAlone.svg';
 import NavBar from "@/components/NavBar.vue";
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
-
-
 import { ref, onMounted, onUnmounted } from "vue";
 import ScatterChart from "@/components/ScatterChart.vue";
+import {PathHistoryView, RegisterDeviceView} from "@/views/index.js";
 
 //Define sidebar state , ref makes it relative
 const isSidebarOpen = ref(false);
@@ -117,7 +116,7 @@ export default {
     ></div>
 
     <!-- Main Content -->
-    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
+    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64">
       <!-- Header -->
          <ScatterChart/>
           <div class="relative">
@@ -131,7 +130,9 @@ export default {
               <a href="/settings" class="block p-2 hover:bg-gray-700 rounded">Settings</a>
             </div>
           </div>
-        </div>
+          <PathHistoryView />
+          <RegisterDeviceView />
+    </div>
       </div>
       <!-- Content Area with Gradient -->
       <div class="flex-1 ml-64 relative px-6 pt-4 lg:px-8">
@@ -140,6 +141,7 @@ export default {
           </div>
         </div>
       </div>
+
 </template>
 
 <style scoped>
