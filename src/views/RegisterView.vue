@@ -33,7 +33,7 @@ export default {
               this.$router.push('/userverification')
             })
             .catch(error => {
-              if (error.response && error.response.status === 409) {
+              if (error  .response && error.response.status === 409) {
                 this.output = error.response.data || "This email already exists!";
               } else {
                 this.output = "An error occurred. Please try again.";

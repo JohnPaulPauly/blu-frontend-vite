@@ -10,8 +10,3 @@ export function pathDistance (positions) {
         distance += euclideanDistance2D(positions[i-1].x, positions[i-1].y, positions[i].x, positions[i].y)
     return distance
 }
-
-export function pathTime (timestamps) {
-
-    return timestamps[timestamps.length-1] - timestamps[0]
-}

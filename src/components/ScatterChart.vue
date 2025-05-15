@@ -19,9 +19,8 @@
           placeholder="size"
       />
       <p><span id="stopwatch">0:00</span></p>
+      <p><span id="distance">0m</span></p>
     </div>
-
-
   </div>
 </template>
 
@@ -156,17 +155,20 @@ const pathPaused = ref(false)
 let pathTime = 0
 let Interval ;
 let appendStopwatch;
+let appendDistance
 let tens = 0;
 const deviceSize = ref(20)//change to device size get mapping
 const pointRadius = .3
 let OutofBoundsAlready =  false
 const pointsOn = ref(false)
 const tempDeviceSize = ref(deviceSize.value)
+let distance = 0
 
 
 //when the chart becomes mounted, a point gets placed every second
 onMounted(() => {
-   appendStopwatch = document.getElementById("stopwatch")
+  appendStopwatch = document.getElementById("stopwatch")
+  appendDistance = document.getElementById("distance")
   const client = new Client({
 
     brokerURL: 'http://localhost:8080/ws/livepath',
@@ -184,8 +186,11 @@ onMounted(() => {
 
         if (pathOn.value)
         {
-          if (!pathPaused.value)
-          data.value = chartConfig.addData(data.value.datasets, position)
+
+          if (!pathPaused.value) {
+            data.value = chartConfig.addData(data.value.datasets, position)
+            incDistance(data.value.datasets[0].data)
+          }
         }
         else
           data.value = chartConfig.newData(data.value.datasets, position)
@@ -386,4 +391,20 @@ function updateDeviceSize(){
   deviceSize.value = tempDeviceSize.value
 }
 
+function euclideanDistance2D  (x1, y1, x2, y2) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function pathDistance (positions) {
+  let distance = 0
+  for (let i = 1; i < positions.length; i++)
+    distance += euclideanDistance2D(positions[i-1].x, positions[i-1].y, positions[i].x, positions[i].y)
+  return distance
+}
+
+function incDistance (positions) {
+  appendDistance.innerHTML = `${Math.floor(pathDistance(positions)*100)/100}m`
+}
 </script>
