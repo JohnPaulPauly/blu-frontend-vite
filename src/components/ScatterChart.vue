@@ -4,14 +4,20 @@
 <template>
   <div class="rowize">
     <div class="chart-div">
-      <Scatter :data="data" :options="options()" />
+      <Scatter :data="data" :options="options(deviceSize)" />
     </div>
     <div class="columnize">
 
-      <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
-      <button class="button-pause" id="pause" @click="pausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
-      <button class="button-new-color" @click="newColorButton()">Random Color</button>
+      <button :class="pathOn ?  'button-end-path' :'button-new-path' " @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
+      <button class="button-pause " id="pause" @click="pausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
+      <button class="button-new-color " @click="newColorButton()">Random Color</button>
       <button class="button-new-color" @click="addPointsButton()">{{pointsOn ? 'Remove points' : 'Add points'}}</button>
+      <input
+          class="input-size"
+          v-model="tempDeviceSize"
+          @keyup.enter="updateDeviceSize"
+          placeholder="size"
+      />
       <p><span id="stopwatch">0:00</span></p>
     </div>
 
@@ -20,6 +26,12 @@
 </template>
 
 <style scoped>
+
+.input-size {
+  border-width: 1px;
+  width: 50px;
+}
+
 .columnize {
   display: flex;
   flex-direction: column;
@@ -138,18 +150,18 @@ const data = ref<ChartData<'line'>>({
 })
 
 let newColor = "#2980b9" //new color to toggle to
-let pathOn = ref(false) // toggles when pressing New Path button
+const pathOn = ref(false) // toggles when pressing New Path button
 let pathName: string
-let pathPaused = ref(false)
+const pathPaused = ref(false)
 let pathTime = 0
 let Interval ;
 let appendStopwatch;
 let tens = 0;
-const deviceSize = 20//change to device size get mapping
+const deviceSize = ref(20)//change to device size get mapping
 const pointRadius = .3
 let OutofBoundsAlready =  false
-let pointsOn = ref(false)
-
+const pointsOn = ref(false)
+const tempDeviceSize = ref(deviceSize.value)
 
 
 //when the chart becomes mounted, a point gets placed every second
@@ -179,7 +191,7 @@ onMounted(() => {
           data.value = chartConfig.newData(data.value.datasets, position)
 
         //alert if out of bounds, only alert once until returning to the map
-        if (Math.abs(position.x) > deviceSize/2 || Math.abs(position.x) > deviceSize/2)
+        if (Math.abs(position.x) > deviceSize.value/2 || Math.abs(position.x) > deviceSize.value/2)
           if (!OutofBoundsAlready) {
             alert("tracker leaving the devices boundaries! this may lead to less accurate tracking.")
             OutofBoundsAlready = true
@@ -370,5 +382,8 @@ function incTimer() {
   }
 }
 
+function updateDeviceSize(){
+  deviceSize.value = tempDeviceSize.value
+}
 
 </script>

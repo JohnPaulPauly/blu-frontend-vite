@@ -2,11 +2,14 @@
   Used in:
     -->
 <template>
-  <div class="container">
-    <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
-    <button class="button-c" @click="AnnotateButton()">{{ annotateOn ? 'Stop' : 'Annotate' }}</button>
+  <div class="rowize">
     <div class="chart-div">
-      <Scatter :data="data" :options="traceOptions()" />
+      <Scatter :data="data" :options=traceOptions(20) />
+    </div>
+
+    <div class="columnize">
+      <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
+      <button class="button-c" @click="AnnotateButton()">{{ annotateOn ? 'Stop' : 'Annotate' }}</button>
     </div>
   </div>
 </template>
@@ -40,6 +43,18 @@
   justify-content: center;
   align-items: center;
 }
+.rowize {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+.columnize {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
 </style>
 
 
@@ -70,6 +85,11 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale
 const data = ref<ChartData<'line'>>({
   datasets: []
 })
+const { message } = defineProps({
+  message:  String
+});
+
+
 
 let annotateOn = ref(false)
 let color = "#2980b9" //new color to toggle to
@@ -83,8 +103,9 @@ let annotateStrings = []
 
 function TracePathButton() {
   //traces a path
-
-
+  if (message === null)
+    return;
+  console.log(message)
 
   //stop tracing path
   if (traceOn) {
@@ -103,14 +124,20 @@ function TracePathButton() {
     traceOn = true
     data.value = chartConfig.clearData()
     //refactor csv
-    const dataTimestamps = [0,1000,2000,3000]//change to real data when this gets plugged in
-    const positions = [{x:1,y:1},{x:2,y:6},{x:3,y:3},{x:4,y:4}]
+    console.log(message)
+    const pathjson = JSON.parse(message)
+    let timestamps = []
+    const positions = []
+    for (let i = 0; i < pathjson.length; i++) {
+      timestamps.push(pathjson[i].timestamp)
+      positions.push({x: pathjson[i].x, y: pathjson[i].y})
 
+    }
 
-    let tmp = dataTimestamps;
+    let tmp = timestamps;
 
     for (let i = 0; i < tmp.length; i++)
-      tmp[i] -= dataTimestamps[0]
+      tmp[i] -= timestamps[0]
 
     const intervals = tmp;
 
@@ -151,7 +178,7 @@ function AnnotateButton(){
 
 }
 
-const traceOptions  = (size=20) => ({
+const traceOptions  = (size) => ({
   legend: false,
   responsive: true,
   maintainAspectRatio: true,
