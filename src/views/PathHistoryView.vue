@@ -202,32 +202,31 @@ export default{
 
 
 <template>
-  <div class="columnize">
-  <div class="flex justify-center items-start min-h-screen p-4">
+  <div class="flex justify-center items-start  p-4">
     <div class="w-3/4 max-w-4xl flex flex-col">
-      <h2 class="text-xl font-bold mb-4 text-center">Path history</h2>
+      <div class="rowize">
+        <input
+            type="file"
+            ref="fileInput"
+            accept=".csv"
+            @change="handleFileUpload"
+            class="hidden"
+        />
 
-      <input
-          type="file"
-          ref="fileInput"
-          accept=".csv"
-          @change="handleFileUpload"
-          class="hidden"
-      />
+        <button
+            @click="triggerFileInput"
+            class="mb-4 bg-blue-500 text-white px-4 py-2 rounded self-center"
+        >
+          Upload CSV
+        </button>
 
-      <button
-          @click="triggerFileInput"
-          class="mb-4 bg-blue-500 text-white px-4 py-2 rounded self-center"
-      >
-        Upload CSV
-      </button>
-      <SearchBar
-          :data="paths"
-          :searchKeys="['name', 'ip_address', 'timestamp']"
-          placeholder="Search by name, IP address, or timestamp"
-          @update:results="filteredPaths = $event"
-      />
-
+        <SearchBar
+            :data="paths"
+            :searchKeys="['name', 'ip_address', 'timestamp']"
+            placeholder="Search by name, IP address, or timestamp"
+            @update:results="filteredPaths = $event"
+        />
+      </div>
       <div class="border border-gray-300">
         <table class="min-w-full text-center">
           <thead class="bg-gray-100 sticky top-0">
@@ -254,7 +253,7 @@ export default{
             <td class="border px-6 py-2">{{ path.ip_address }}</td>
             <td class="border px-6 py-2">{{ formatDate(path.timestamp) }}</td>
             <td class="border px-6 py-2 relative">
-              <div class="flex flex-col items-center gap-2">
+              <div class="flex flex-row items-center gap-2">
               <button
                   @click="deletePath(index)"
                   class="bg-red-500 text-white px-3 py-1 rounded"
@@ -295,13 +294,17 @@ export default{
     </div>
   </div>
 
-  </div>
 </template>
 
 <style scoped>
 .columnize {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+.rowize {
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }
 

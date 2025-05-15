@@ -111,7 +111,6 @@ export default{
 <template>
   <div class="flex justify-center items-start min-h-screen p-4">
     <div class="w-3/4 max-w-4xl flex flex-col">
-      <h2 class="text-xl font-bold mb-4 text-center">Device List</h2>
 
       <div class="mb-4">
         <input v-model="newDeviceName" placeholder="Device Name" class="border px-3 py-2 mr-2" />

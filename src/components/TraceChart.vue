@@ -2,13 +2,14 @@
   Used in:
     -->
 <template>
-  <div class="container">
-    <div class="rowize">
-      <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
-      <button class="button-c" @click="AnnotateButton()">{{ annotateOn ? 'Stop' : 'Annotate' }}</button>
-    </div>
+  <div class="rowize">
     <div class="chart-div">
       <Scatter :data="data" :options=traceOptions(20) />
+    </div>
+
+    <div class="columnize">
+      <button class="button-c" @click="TracePathButton()">{{ traceOn ? 'End Trace' : 'Trace Path' }}</button>
+      <button class="button-c" @click="AnnotateButton()">{{ annotateOn ? 'Stop' : 'Annotate' }}</button>
     </div>
   </div>
 </template>
@@ -36,8 +37,8 @@
 }
 
 .chart-div {
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,6 +46,12 @@
 .rowize {
   display: flex;
   flex-direction: row;
+  align-items: center;
+
+}
+.columnize {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 
 }

@@ -9,6 +9,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { ref, onMounted, onUnmounted } from "vue";
 import DashboardItems from "@/components/DashboardItems.vue";
 import AccessMapView from "@/views/AccessMapView.vue";
+import RegisterDeviceView from "./RegisterDeviceView.vue"
 import ScatterChart from "@/components/ScatterChart.vue";
 import PathHistoryView from "@/views/PathHistoryView.vue";
 import TraceChart from "@/components/TraceChart.vue";
@@ -17,10 +18,8 @@ import TraceChart from "@/components/TraceChart.vue";
 const isSidebarOpen = ref(false);
 const msgToTraceChart = ref(null)
 const showDropdown = ref(false);
-
-const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-};
+const historyOpen = ref(false)
+const deviceOpen = ref(false)
 
 //Top NavBar opens from hamburger menu on small screens and closes when clicked outside of hamburger
 const toggleSidebar =  () => {
@@ -51,6 +50,12 @@ onUnmounted(() => {
 function PathHistoryToTraceChart(pathText){
   console.log("pathText:" + pathText.toString())
   msgToTraceChart.value = pathText
+}
+function toggleHistoryDropdown() {
+  historyOpen.value = !historyOpen.value;
+}
+function toggleDeviceDropdown() {
+  deviceOpen.value = !deviceOpen.value;
 }
 
 </script>
@@ -126,15 +131,34 @@ export default {
     ></div>
 
     <!-- Main Content -->
-    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
+    <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen  sm:ml-64 ">
       <!-- Header -->
-      <div class="rowize">
+      <div class="rowize flex-stretch">
       <ScatterChart/>
         <TraceChart
           :key="traceKey"
           :message="msgToTraceChart"/>
       </div>
-      <PathHistoryView @PathHistoryEvent="PathHistoryToTraceChart"/>
+      <div class="relative inline-block text-left">
+        <div class="columnize">
+        <button @click="toggleHistoryDropdown" style="background-color: #dbe0e0" class="text-black  px-4 py-2">
+          {{historyOpen ? "Path History ▲" : "Path History ▼"}}
+        </button>
+
+        <div v-if="historyOpen">
+          <PathHistoryView @PathHistoryEvent="PathHistoryToTraceChart"/>
+        </div>
+
+        <button @click="toggleDeviceDropdown" style="background-color: #dbe0e0" class="text-black px-4 py-2">
+          {{deviceOpen ? "Devices ▲" : "Devices ▼"}}
+        </button>
+
+        <div v-if="deviceOpen">
+          <RegisterDeviceView/>
+        </div>
+        </div>
+
+
 
 
           <div class="relative">
@@ -158,6 +182,7 @@ export default {
           </div>
         </div>
       </div>
+  </div>
 </template>
 
 <style scoped>
@@ -195,8 +220,13 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.columnize {
+  display: flex;
+  flex-direction: column;
 
 }
+
 
 
 </style>
