@@ -18,6 +18,12 @@ export default{
       get() {
         return this.activeDevice ? this.activeDevice.ipAddress : null;
       },
+      currentUserEmail() {
+        // const user = JSON.parse(localStorage.getItem("user"));
+        const user = 'ntsimerekis@yahoo.com';
+        //return user?.email || "";
+        return user;
+      }
     },
   },
   // Load all the devices and the active device
@@ -30,7 +36,7 @@ export default{
     async listDevices() {
       // Fetches all devices from backend
       try {
-        const response = await axios.get("http://localhost:8080/devices/ntsimerekis@yahoo.com");
+        const response = await axios.get(`http://localhost:8080/devices/ntsimerekis@yahoo.com`);
         this.devices = response.data;
         console.log("Fetched devices:", this.devices);
       }catch(error) {
@@ -44,7 +50,7 @@ export default{
         ipAddress: device.ipAddress,
         active: true,
       };
-      await axios.post("http://localhost:8080/devices/ntsimerekis@yahoo.com", payload)
+      await axios.post(`http://localhost:8080/devices/ntsimerekis@yahoo.com`, payload);
       this.activeDevice = device;
       localStorage.setItem("activeDevice", JSON.stringify(device));
       console.log(`${device.name}, " is now the active device. with IP: ", ${device.ipAddress}`);
@@ -71,12 +77,11 @@ export default{
           active: false,
         };
 
-        await axios.post("http://localhost:8080/devices/ntsimerekis@yahoo.com", payload);
+        await axios.post(`http://localhost:8080/devices/ntsimerekis@yahoo.com`, payload);
 
-        this.devices.push({
-          name: this.newDeviceName,
-          ipAddress: this.newDeviceIp,
-        });
+        const response = await axios.get(`http://localhost:8080/devices/ntsimerekis@yahoo.com`);
+        this.devices = response.data;
+        console.log("Fetched devices:", this.devices);
 
         this.message = "Device successfully added.";
         this.messageType = "success";
@@ -93,7 +98,8 @@ export default{
       const device = this.devices[index];
 
       try {
-        await axios.delete(`http://localhost:8080/devices/ntsimerekis@yahoo.com/${device.ipAddress}`);
+        const strippedIP = device.ipAddress.replace(/[\[\]]/g, '');
+        await axios.delete(`http://localhost:8080/devices/ntsimerekis@yahoo.com/${strippedIP}`);
 
         this.devices.splice(index, 1);
         this.message = "Device deleted successfully.";

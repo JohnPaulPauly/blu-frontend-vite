@@ -72,11 +72,19 @@ export default {
 
       // Locks user account if user confirms
       const user = this.users.find(u => u.email === userEmail);
-      if (user) {
-        user.enabled = !user.enabled;
-        console.log(`${user.fullName} account locked status is now: ${!user.enabled ? 'Locked' : 'Unlocked'}`);
-      }
+      if (!user) return;
 
+      const newStatus = !user.enabled;
+      try {
+        axios.post(`http://localhost:8080/auth/changestatus/${userEmail}/true`, user)
+        user.enabled = newStatus;
+        console.log(`${user.fullName} account locked status is now: ${!user.enabled ? 'Locked' : 'Unlocked'}`);
+        this.filteredUsers = this.filteredUsers.map(u =>
+            u.email === userEmail ? { ...u, enabled: newStatus } : u
+        );
+      } catch (error) {
+        console.error("Failed to change user status")
+      }
       // Adjust filter to fit with users
       this.filteredUsers = this.filteredUsers.map(u =>
           u.email === userEmail ? { ...u, enabled: user.enabled } : u
@@ -99,9 +107,11 @@ export default {
         const isAdmin = user.authorities.includes("ROLE_ADMIN");
 
         if (isAdmin) {
+          axios.post(`http://localhost:8080/auth/grantadmin/${userEmail}/false`, user)
           user.authorities = user.authorities.filter(role => role !== "ROLE_ADMIN");
           console.log(`${user.fullName} has been demoted from admin.`);
         } else {
+          axios.post(`http://localhost:8080/auth/grantadmin/${userEmail}/true`, user)
           user.authorities.push("ROLE_ADMIN");
           console.log(`${user.fullName} has been promoted to admin.`);
         }
