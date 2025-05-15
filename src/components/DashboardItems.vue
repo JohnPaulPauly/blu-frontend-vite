@@ -6,10 +6,9 @@ import SearchBar from "@/components/SearchBar.vue";
 import "@/components/TraceChart.vue"
 import { ArrowDownOnSquareStackIcon, TrashIcon} from '@heroicons/vue/24/solid';
 import TraceChart from "@/components/TraceChart.vue";
-import { ref, onMounted } from 'vue';
-const componentKey = ref(0);
+import ScatterChart from "@/components/ScatterChart.vue";
 export default{
-  components: {TraceChart, SearchBar, ArrowDownOnSquareStackIcon, TrashIcon},
+  components: {ScatterChart, TraceChart, SearchBar, ArrowDownOnSquareStackIcon, TrashIcon},
   // Default paths and sorting order
   data() {
     return {
@@ -18,7 +17,6 @@ export default{
       sortBy: null,
       sortOrder: 1,
       dropdownOpen: null, // Track which dropdown is open
-      parentMessage: null
     };
   },
   // Load all the paths under the user
@@ -74,8 +72,8 @@ export default{
       }
     },
 
-     addTrial() {
-       return;
+    addTrial() {
+      return;
     },
     // Sort path on columns
     sortPaths(column) {
@@ -135,18 +133,6 @@ export default{
         console.error("Error downloading CSV:", error);
       }
     },
-    async tracePath (path) {
-      try {
-        const response = await axios.get(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${path.name}?json=true`, {
-          responseType: 'blob', // Important: Get the response as a file/blob
-        });
-        const text = await response.data.text();
-        this.parentMessage = text;
-
-      }catch (error) {
-        console.error("Error Sending path file to Trace Chart:", error);
-      }
-    },
     formatDate(dateString) {
       const options = {
         year: 'numeric',
@@ -200,96 +186,95 @@ export default{
 
 
 <template>
+  <div class="rowize">
+    <ScatterChart/>
+    <TraceChart/>
+  </div>
   <div class="columnize">
-    <TraceChart
-    :key="traceKey"
-    :message="parentMessage"/>
-  <div class="flex justify-center items-start min-h-screen p-4">
-    <div class="w-3/4 max-w-4xl flex flex-col">
-      <h2 class="text-xl font-bold mb-4 text-center">Path history</h2>
 
-      <input
-          type="file"
-          ref="fileInput"
-          accept=".csv"
-          @change="handleFileUpload"
-          class="hidden"
-      />
+    <div class="flex justify-center items-start min-h-screen p-4">
+      <div class="w-3/4 max-w-4xl flex flex-col">
+        <h2 class="text-xl font-bold mb-4 text-center">Path history</h2>
 
-      <button
-          @click="triggerFileInput"
-          class="mb-4 bg-blue-500 text-white px-4 py-2 rounded self-center"
-      >
-        Upload CSV
-      </button>
-      <SearchBar
-          :data="paths"
-          :searchKeys="['name', 'ip_address', 'timestamp']"
-          placeholder="Search by name, IP address, or timestamp"
-          @update:results="filteredPaths = $event"
-      />
+        <input
+            type="file"
+            ref="fileInput"
+            accept=".csv"
+            @change="handleFileUpload"
+            class="hidden"
+        />
 
-      <div class="border border-gray-300">
-        <table class="min-w-full text-center">
-          <thead class="bg-gray-100 sticky top-0">
-          <tr>
-            <th class="border px-6 py-2 cursor-pointer" @click="sortPaths('name')">
-              Name
-              <span v-if="sortBy === 'name'">{{ sortOrder === 1 ? "▲" : "▼" }}</span>
-            </th>
-            <th class="border px-6 py-2">IPv6 Address</th>
-            <th class="border px-6 py-2 cursor-pointer" @click="sortPaths('timestamp')">
-              Time
-              <span v-if="sortBy === 'timestamp'">{{ sortOrder === 1 ? "▲" : "▼" }}</span>
-            </th>
-            <th class="border px-6 py-2">Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-              v-for="(path, index) in filteredPaths"
-              :key="index"
-              class="hover:bg-gray-50"
-          >
-            <td class="border px-6 py-2">{{ path.name }}</td>
-            <td class="border px-6 py-2">{{ path.ip_address }}</td>
-            <td class="border px-6 py-2">{{ formatDate(path.timestamp) }}</td>
-            <td class="border px-6 py-2 relative">
-              <div class="flex flex-col items-center gap-2">
-              <button
-                  @click="deletePath(index)"
-                  class="bg-red-500 text-white px-3 py-1 rounded"
-              >
-                <TrashIcon class="w-5 h-5" />
-              </button>
+        <button
+            @click="triggerFileInput"
+            class="mb-4 bg-blue-500 text-white px-4 py-2 rounded self-center"
+        >
+          Upload CSV
+        </button>
+        <SearchBar
+            :data="paths"
+            :searchKeys="['name', 'ip_address', 'timestamp']"
+            placeholder="Search by name, IP address, or timestamp"
+            @update:results="filteredPaths = $event"
+        />
 
-              <!-- Download dropdown -->
-              <div class=" inline-block text-left">
-                <button @click.stop="toggleDropdown(index)"
-                class="dropdown-button bg-blu700 hover:bg-blu600 text-white font-bold py-1 px-3 rounded">
-                  <ArrowDownOnSquareStackIcon class="w-5 h-5" />
-                </button>
-
-                <div v-if="dropdownOpen === index" class="absolute left-full top-0 ml-2 w-32 bg-white border rounded shadow-lg z-50">
-                  <button @click="downloadAsJSON(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                    JSON
+        <div class="border border-gray-300">
+          <table class="min-w-full text-center">
+            <thead class="bg-gray-100 sticky top-0">
+            <tr>
+              <th class="border px-6 py-2 cursor-pointer" @click="sortPaths('name')">
+                Name
+                <span v-if="sortBy === 'name'">{{ sortOrder === 1 ? "▲" : "▼" }}</span>
+              </th>
+              <th class="border px-6 py-2">IPv6 Address</th>
+              <th class="border px-6 py-2 cursor-pointer" @click="sortPaths('timestamp')">
+                Time
+                <span v-if="sortBy === 'timestamp'">{{ sortOrder === 1 ? "▲" : "▼" }}</span>
+              </th>
+              <th class="border px-6 py-2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                v-for="(path, index) in filteredPaths"
+                :key="index"
+                class="hover:bg-gray-50"
+            >
+              <td class="border px-6 py-2">{{ path.name }}</td>
+              <td class="border px-6 py-2">{{ path.ip_address }}</td>
+              <td class="border px-6 py-2">{{ formatDate(path.timestamp) }}</td>
+              <td class="border px-6 py-2 relative">
+                <div class="flex flex-col items-center gap-2">
+                  <button
+                      @click="deletePath(index)"
+                      class="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    <TrashIcon class="w-5 h-5" />
                   </button>
-<!--                  <button @click="downloadAsCSV(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">-->
-<!--                    CSV-->
-<!--                  </button>-->
-                  <button @click="tracePath(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                    Trace
-                  </button>
+
+                  <!-- Download dropdown -->
+                  <div class=" inline-block text-left">
+                    <button @click.stop="toggleDropdown(index)"
+                            class="dropdown-button bg-blu700 hover:bg-blu600 text-white font-bold py-1 px-3 rounded">
+                      <ArrowDownOnSquareStackIcon class="w-5 h-5" />
+                    </button>
+
+                    <div v-if="dropdownOpen === index" class="absolute left-full top-0 ml-2 w-32 bg-white border rounded shadow-lg z-50">
+                      <button @click="downloadAsJSON(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                        JSON
+                      </button>
+                      <button @click="downloadAsCSV(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                        CSV
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 
   </div>
 </template>
@@ -300,6 +285,12 @@ export default{
   flex-direction: column;
   align-items: center;
 }
+.rowize {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 
 /* Ensure the table header remains fixed */
 thead {

@@ -7,7 +7,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 
 import { ref, onMounted, onUnmounted } from "vue";
-import ScatterChart from "@/components/ScatterChart.vue";
+import DashboardItems from "@/components/DashboardItems.vue";
 
 //Define sidebar state , ref makes it relative
 const isSidebarOpen = ref(false);
@@ -119,7 +119,7 @@ export default {
     <!-- Main Content -->
     <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
       <!-- Header -->
-         <ScatterChart/>
+         <DashboardItems/>
           <div class="relative">
             <button @click="toggleDropdown">
               <Settings class="text-white" />
