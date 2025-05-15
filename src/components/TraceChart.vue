@@ -79,7 +79,7 @@ const data = ref<ChartData<'line'>>({
   datasets: []
 })
 const { message } = defineProps({
-  message: String
+  message:  String
 });
 
 
@@ -98,7 +98,7 @@ function TracePathButton() {
   //traces a path
   if (message === null)
     return;
-
+  console.log(message)
 
   //stop tracing path
   if (traceOn) {

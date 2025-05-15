@@ -8,7 +8,7 @@
     </div>
     <div class="columnize">
 
-      <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>             BV//////
+      <button :class="pathOn ?  'button-end-path' :'button-new-path'" @click="newPathButton()">{{ pathOn ? 'End Path' : 'New Path'}}</button>
       <button class="button-pause" id="pause" @click="pausePathButton()">{{pathPaused ? '▶' : '⏸'}}</button>
       <button class="button-new-color" @click="newColorButton()">Random Color</button>
       <button class="button-new-color" @click="addPointsButton()">{{pointsOn ? 'Remove points' : 'Add points'}}</button>

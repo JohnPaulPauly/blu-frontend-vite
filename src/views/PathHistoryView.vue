@@ -10,6 +10,7 @@ import { ref, onMounted } from 'vue';
 const componentKey = ref(0);
 export default{
   components: {TraceChart, SearchBar, ArrowDownOnSquareStackIcon, TrashIcon},
+  emits: ["PathHistoryEvent"],
   // Default paths and sorting order
   data() {
     return {
@@ -18,7 +19,6 @@ export default{
       sortBy: null,
       sortOrder: 1,
       dropdownOpen: null, // Track which dropdown is open
-      parentMessage: null
     };
   },
   // Load all the paths under the user
@@ -135,14 +135,16 @@ export default{
         console.error("Error downloading CSV:", error);
       }
     },
-    async tracePath (path) {
+    async tracePath (index) {
+      const path = this.paths[index]
       try {
         const response = await axios.get(`http://localhost:8080/paths/ntsimerekis@yahoo.com/${path.name}?json=true`, {
           responseType: 'blob', // Important: Get the response as a file/blob
         });
-        const text = await response.data.text();
-        this.parentMessage = text;
+        const text = await response.data.text()
+        this.$emit('PathHistoryEvent',text);
 
+        return text;
       }catch (error) {
         console.error("Error Sending path file to Trace Chart:", error);
       }
@@ -201,9 +203,6 @@ export default{
 
 <template>
   <div class="columnize">
-    <TraceChart
-    :key="traceKey"
-    :message="parentMessage"/>
   <div class="flex justify-center items-start min-h-screen p-4">
     <div class="w-3/4 max-w-4xl flex flex-col">
       <h2 class="text-xl font-bold mb-4 text-center">Path history</h2>
@@ -262,6 +261,12 @@ export default{
               >
                 <TrashIcon class="w-5 h-5" />
               </button>
+                <button
+                    @click="tracePath(index)"
+                    class="bg-blu700 text-white px-3 py-1 rounded"
+                >
+                  Trace
+                </button>
 
               <!-- Download dropdown -->
               <div class=" inline-block text-left">
@@ -274,12 +279,11 @@ export default{
                   <button @click="downloadAsJSON(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
                     JSON
                   </button>
-<!--                  <button @click="downloadAsCSV(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">-->
-<!--                    CSV-->
-<!--                  </button>-->
-                  <button @click="tracePath(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                    Trace
+                  <button @click="downloadAsCSV(path)" class="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                    CSV
                   </button>
+
+
                 </div>
               </div>
               </div>

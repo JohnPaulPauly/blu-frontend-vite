@@ -8,10 +8,14 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 import { ref, onMounted, onUnmounted } from "vue";
 import DashboardItems from "@/components/DashboardItems.vue";
+import AccessMapView from "@/views/AccessMapView.vue";
+import ScatterChart from "@/components/ScatterChart.vue";
+import PathHistoryView from "@/views/PathHistoryView.vue";
+import TraceChart from "@/components/TraceChart.vue";
 
 //Define sidebar state , ref makes it relative
 const isSidebarOpen = ref(false);
-
+const msgToTraceChart = ref(null)
 const showDropdown = ref(false);
 
 const toggleDropdown = () => {
@@ -43,6 +47,11 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", closeSidebarOnOutsideClick);
 });
+
+function PathHistoryToTraceChart(pathText){
+  console.log("pathText:" + pathText.toString())
+  msgToTraceChart.value = pathText
+}
 
 </script>
 
@@ -119,11 +128,20 @@ export default {
     <!-- Main Content -->
     <div class="flex-1 px-8 flex flex-col items-stretch justify-start min-h-screen text-center sm:ml-64 ">
       <!-- Header -->
-         <DashboardItems/>
+      <div class="rowize">
+      <ScatterChart/>
+        <TraceChart
+          :key="traceKey"
+          :message="msgToTraceChart"/>
+      </div>
+      <PathHistoryView @PathHistoryEvent="PathHistoryToTraceChart"/>
+
+
           <div class="relative">
             <button @click="toggleDropdown">
               <Settings class="text-white" />
             </button>
+
             <div v-if="showDropdown" class="absolute right-0 mt-2 w-40 bg-gray-800 rounded shadow-lg p-2">
               <a href="/profile" class="flex items-center gap-2 p-2 hover:bg-gray-700 rounded">
                 <User class="text-white" size="16" /> Profile
@@ -172,6 +190,12 @@ export default {
 
 .btn-pairing {
   background-color: #75A3FF;
+}
+.rowize {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
 }
 
 
